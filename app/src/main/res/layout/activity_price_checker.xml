@@ -11,6 +11,10 @@
     tools:context="com.seanblonien.cryptokit.PriceChecker">
 
     <!-- Login progress -->
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <ProgressBar
         android:id="@+id/login_progress"
         style="?android:attr/progressBarStyleLarge"
