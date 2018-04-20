@@ -1,20 +1,5 @@
 package com.seanblonien.cryptokit;
 
-import android.os.NetworkOnMainThreadException;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class CryptoAsset {
     private String id;
     private String name;
