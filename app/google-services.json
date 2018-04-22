@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "286245585324",
+    "firebase_url": "https://cryptokit-2244e.firebaseio.com",
+    "project_id": "cryptokit-2244e",
+    "storage_bucket": "cryptokit-2244e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:286245585324:android:367e3c51933d31b0",
+        "android_client_info": {
+          "package_name": "com.seanblonien.cryptokit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "286245585324-jbhe0mgi2i0665ddjguel6cvoe0cki0f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.seanblonien.cryptokit",
+            "certificate_hash": "53500266e9424f3be4cba71b4a00ecd9876dc3bf"
+          }
+        },
+        {
+          "client_id": "286245585324-80au5hvjjaqv57r1rf6k06jh9f37upu1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFpPwUnrEPH61ISf8imQ_inzN_EeGOlFI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "286245585324-80au5hvjjaqv57r1rf6k06jh9f37upu1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

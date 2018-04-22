@@ -2,6 +2,7 @@ package com.seanblonien.cryptokit;
 
 import android.os.AsyncTask;
 import android.os.NetworkOnMainThreadException;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -9,6 +10,7 @@ import com.google.gson.GsonBuilder;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
@@ -29,9 +31,12 @@ public class GetJSON extends AsyncTask<Void, Void, List<CryptoAsset>> {
             BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
             pageText = reader.lines().collect(Collectors.joining("\n"));
             Gson gson = new GsonBuilder().create();
+            gson.fieldNamingStrategy().translateName(CryptoAsset.class.getField("volume_usd"));
             assets = Arrays.asList(gson.fromJson(pageText, CryptoAsset[].class));
             System.out.println(assets);
         } catch (IOException | NetworkOnMainThreadException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
 
