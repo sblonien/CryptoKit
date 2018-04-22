@@ -18,6 +18,7 @@ public class CryptoAsset {
     private Float percent_change_24h;
     private Float percent_change_7d;
     private Long last_updated;
+    private String image;
 
     @Override
     public String toString() {
@@ -37,7 +38,16 @@ public class CryptoAsset {
                 ", percent_change_24h=" + percent_change_24h +
                 ", percent_change_7d=" + percent_change_7d +
                 ", last_updated=" + last_updated +
+                ", image='" + image + '\'' +
                 '}';
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getId() {

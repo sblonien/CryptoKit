@@ -307,7 +307,6 @@ public class LogIn extends AppCompatActivity implements LoaderCallbacks<Cursor> 
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-            new GetJSON().execute();
 
             try {
                 // Simulate network access.
