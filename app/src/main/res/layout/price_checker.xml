@@ -53,7 +53,8 @@
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <include layout="@layout/content_main"/>
+    <!--<android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -63,6 +64,6 @@
         android:scrollbars="vertical"
         app:cardCornerRadius="5dp"
         app:cardElevation="5dp"
-        app:cardUseCompatPadding="true" />
+        app:cardUseCompatPadding="true" />-->
 
 </LinearLayout>
