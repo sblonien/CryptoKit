@@ -2,8 +2,7 @@
 <LinearLayout android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
         android:id="@+id/price_checker"
@@ -15,7 +14,6 @@
         android:textColor="#000"
         android:textSize="30sp" />
 
-    <!--<include layout="@layout/content_main"/>-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="24dp"
@@ -23,7 +21,7 @@
 
         <TextView
             android:id="@+id/label_symbol"
-            android:layout_width="252dp"
+            android:layout_width="257dp"
             android:layout_height="match_parent"
             android:fontFamily="sans-serif"
             android:gravity="center"
@@ -54,16 +52,5 @@
     </LinearLayout>
 
     <include layout="@layout/content_main"/>
-    <!--<android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
-        android:layout_marginTop="6dp"
-        android:scrollbars="vertical"
-        app:cardCornerRadius="5dp"
-        app:cardElevation="5dp"
-        app:cardUseCompatPadding="true" />-->
 
 </LinearLayout>

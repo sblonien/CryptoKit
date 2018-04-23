@@ -15,7 +15,7 @@
     </string>
     <string name="price_checker">Price Checker</string>
     <string name="crypto_asset_icon">Crypto Asset Icon</string>
-    <string name="placeholder_name">                    Name</string>
+    <string name="placeholder_name">\u0009\u0009\u0009\u0009\u0009 Name</string>
     <string name="placeholder_price">Price USD</string>
     <string name="placeholder_percent_change">24h % Δ</string>
 </resources>
