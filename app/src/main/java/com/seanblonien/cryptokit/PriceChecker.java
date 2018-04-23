@@ -155,20 +155,22 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Toast.makeText(PriceChecker.this,"Fetching one asset",Toast.LENGTH_LONG).show();
         }
 
         @Override
         protected Void doInBackground(Integer... position) {
+            int index  = Integer.parseInt(position.toString());
+            Toast.makeText(PriceChecker.this,"Fetching "+assets.get(index).getName(),Toast.LENGTH_LONG).show();
             String pageText;
             try {
-                URL url = new URL("https://api.coinmarketcap.com/v1/ticker/"+position);
+                URL url = new URL("https://api.coinmarketcap.com/v1/ticker/"+assets.get(Integer.parseInt(position.toString())).getSymbol());
                 URLConnection conn = url.openConnection();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
                 pageText = reader.lines().collect(Collectors.joining("\n"));
                 Gson gson = new GsonBuilder().create();
-                assets.addAll(Arrays.asList(gson.fromJson(pageText, CryptoAsset[].class)));
-                Log.i(TAG, assets.toString());
+                CryptoAsset c = gson.fromJson(pageText, CryptoAsset.class);
+                assets.set(Integer.parseInt(position.toString()),c);
+                Log.i(TAG, c.toString());
             } catch (IOException | NetworkOnMainThreadException  e) {
                 e.printStackTrace();
             }
