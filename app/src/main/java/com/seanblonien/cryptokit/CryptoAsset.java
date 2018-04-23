@@ -85,40 +85,45 @@ public class CryptoAsset {
         return rank;
     }
 
-    public void setRank(Long rank) {
+    public CryptoAsset setRank(Long rank) {
         this.rank = rank;
+        return this;
     }
 
     public Double getPrice_usd() {
         return price_usd;
     }
 
-    public void setPrice_usd(Double price_usd) {
+    public CryptoAsset setPrice_usd(Double price_usd) {
         this.price_usd = price_usd;
+        return this;
     }
 
     public Double getPrice_btc() {
         return price_btc;
     }
 
-    public void setPrice_btc(Double price_btc) {
+    public CryptoAsset setPrice_btc(Double price_btc) {
         this.price_btc = price_btc;
+        return this;
     }
 
     public Double getVolume_usd() {
         return volume_usd;
     }
 
-    public void setVolume_usd(Double volume_usd) {
+    public CryptoAsset setVolume_usd(Double volume_usd) {
         this.volume_usd = volume_usd;
+        return this;
     }
 
     public Double getMarket_cap_usd() {
         return market_cap_usd;
     }
 
-    public void setMarket_cap_usd(Double market_cap_usd) {
+    public CryptoAsset setMarket_cap_usd(Double market_cap_usd) {
         this.market_cap_usd = market_cap_usd;
+        return this;
     }
 
     public Long getAvailable_supply() {
@@ -149,31 +154,35 @@ public class CryptoAsset {
         return percent_change_1h;
     }
 
-    public void setPercent_change_1h(Float percent_change_1h) {
+    public CryptoAsset setPercent_change_1h(Float percent_change_1h) {
         this.percent_change_1h = percent_change_1h;
+        return this;
     }
 
     public Float getPercent_change_24h() {
         return percent_change_24h;
     }
 
-    public void setPercent_change_24h(Float percent_change_24h) {
+    public CryptoAsset setPercent_change_24h(Float percent_change_24h) {
         this.percent_change_24h = percent_change_24h;
+        return this;
     }
 
     public Float getPercent_change_7d() {
         return percent_change_7d;
     }
 
-    public void setPercent_change_7d(Float percent_change_7d) {
+    public CryptoAsset setPercent_change_7d(Float percent_change_7d) {
         this.percent_change_7d = percent_change_7d;
+        return this;
     }
 
     public Long getLast_updated() {
         return last_updated;
     }
 
-    public void setLast_updated(Long last_updated) {
+    public CryptoAsset setLast_updated(Long last_updated) {
         this.last_updated = last_updated;
+        return this;
     }
 }

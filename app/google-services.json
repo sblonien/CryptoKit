@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "286245585324-kmvo0ivlu41su0qr9kh70rvd0mepl6pk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.seanblonien.cryptokit",
+            "certificate_hash": "2888cfa5a7b4ace94163799780f0c1d56d54dbc7"
+          }
+        },
+        {
           "client_id": "286245585324-jbhe0mgi2i0665ddjguel6cvoe0cki0f.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

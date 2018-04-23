@@ -81,7 +81,8 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
     }
 
     private void updateData(int position) {
-
+        updateID u = new updateID(position);
+        u.execute();
     }
 
     /*
@@ -95,8 +96,6 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
             // Check if user triggered a refresh:
             case R.id.swipe_container:
                 Log.i(TAG, "Refresh menu item selected");
-
-                fetchData();
 
                 return true;
         }
@@ -150,7 +149,12 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
         }
     }
 
-    private class updateID extends AsyncTask<Integer, Void, Void> {
+    private class updateID extends AsyncTask<Void, Void, Void> {
+        Integer index;
+
+        updateID(Integer i){
+            this.index = i;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -158,18 +162,24 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
         }
 
         @Override
-        protected Void doInBackground(Integer... position) {
-            int index  = Integer.parseInt(position.toString());
-            Toast.makeText(PriceChecker.this,"Fetching "+assets.get(index).getName(),Toast.LENGTH_LONG).show();
+        protected Void doInBackground(Void... voids) {
             String pageText;
             try {
-                URL url = new URL("https://api.coinmarketcap.com/v1/ticker/"+assets.get(Integer.parseInt(position.toString())).getSymbol());
+                URL url = new URL("https://api.coinmarketcap.com/v1/ticker/"+assets.get(index).getId());
                 URLConnection conn = url.openConnection();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
                 pageText = reader.lines().collect(Collectors.joining("\n"));
                 Gson gson = new GsonBuilder().create();
-                CryptoAsset c = gson.fromJson(pageText, CryptoAsset.class);
-                assets.set(Integer.parseInt(position.toString()),c);
+                List<CryptoAsset> c;
+                c = Arrays.asList(gson.fromJson(pageText, CryptoAsset[].class));
+                CryptoAsset b = c.get(0);
+                assets.get(index)
+                        .setPrice_usd(b.getPrice_usd())
+                        .setPrice_btc(b.getPrice_btc())
+                        .setPercent_change_1h(b.getPercent_change_1h())
+                        .setPercent_change_24h(b.getPercent_change_24h())
+                        .setVolume_usd(b.getVolume_usd())
+                        .setLast_updated(b.getLast_updated());
                 Log.i(TAG, c.toString());
             } catch (IOException | NetworkOnMainThreadException  e) {
                 e.printStackTrace();
