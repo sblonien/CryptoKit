@@ -20,6 +20,13 @@ public class CryptoAsset {
     private Long last_updated;
     private String image;
 
+    CryptoAsset(String name, Double price, Float percent, String image) {
+        this.name = name;
+        this.price_usd = price;
+        this.percent_change_1h = percent;
+        this.image = image;
+    }
+
     @Override
     public String toString() {
         return "CryptoAsset{" +

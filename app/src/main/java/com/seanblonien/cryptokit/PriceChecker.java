@@ -1,27 +1,18 @@
 package com.seanblonien.cryptokit;
 
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.NetworkOnMainThreadException;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.util.TypedValue;
-import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -31,32 +22,43 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class PriceChecker extends Activity {
     private String TAG = PriceChecker.class.getSimpleName();
-    protected GetJSON getjson = new GetJSON();
+    protected GetJSON getjson;
     protected List<CryptoAsset> assets;
-    private LinearLayoutManager linearLayoutManager;
-    private RecyclerView rv;
+    private RecyclerView recyclerView;
     private RVAdapter rvadapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.price_checker);
-
-        rv = findViewById(R.id.recycler_view);
         assets = new ArrayList<>();
-        getjson.execute();
+        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        rvadapter = new RVAdapter(this, this.assets);
+        recyclerView.setAdapter(rvadapter);
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                CryptoAsset movie = assets.get(position);
+                Toast.makeText(getApplicationContext(), movie.getName() + " is selected!", Toast.LENGTH_SHORT).show();
+            }
 
-        linearLayoutManager = new LinearLayoutManager(this.getApplicationContext());
-        rv.setLayoutManager(linearLayoutManager);
-        rvadapter = new RVAdapter(this, assets);
-        rv.setAdapter(rvadapter);
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
+
+        getjson = new GetJSON();
+        getjson.execute();
     }
 
     private class GetJSON extends AsyncTask<Void, Void, Void> {
@@ -70,18 +72,17 @@ public class PriceChecker extends Activity {
         @Override
         protected Void doInBackground(Void... voids) {
             String pageText;
-            List<CryptoAsset> assets = null;
             try {
                 URL url = new URL("https://api.coinmarketcap.com/v1/ticker/");
                 URLConnection conn = url.openConnection();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
                 pageText = reader.lines().collect(Collectors.joining("\n"));
                 Gson gson = new GsonBuilder().create();
-                assets = Arrays.asList(gson.fromJson(pageText, CryptoAsset[].class));
+                assets.addAll(Arrays.asList(gson.fromJson(pageText, CryptoAsset[].class)));
                 for(CryptoAsset c : assets){
                     c.setImage("https://chasing-coins.com/api/v1/std/logo/"+c.getSymbol());
                 }
-                Log.i(TAG, assets.toString());
+                //Log.i(TAG, assets.toString());
             } catch (IOException | NetworkOnMainThreadException  e) {
                 e.printStackTrace();
             }
