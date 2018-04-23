@@ -50,8 +50,9 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                CryptoAsset movie = assets.get(position);
-                Toast.makeText(getApplicationContext(), movie.getName() + " is selected!", Toast.LENGTH_SHORT).show();
+                CryptoAsset asset = assets.get(position);
+                Toast.makeText(getApplicationContext(), asset.getName() + " updated!", Toast.LENGTH_SHORT).show();
+                updateData(position);
             }
 
             @Override
@@ -77,6 +78,10 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
         mSwipeRefreshLayout.setRefreshing(true);
         getjson = new GetJSON();
         getjson.execute();
+    }
+
+    private void updateData(int position) {
+
     }
 
     /*
@@ -128,7 +133,42 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
                 for(CryptoAsset c : assets){
                     c.setImage("https://chasing-coins.com/api/v1/std/logo/"+c.getSymbol());
                 }
-                //Log.i(TAG, assets.toString());
+                Log.i(TAG, assets.toString());
+            } catch (IOException | NetworkOnMainThreadException  e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            rvadapter.notifyDataSetChanged();
+            if(mSwipeRefreshLayout.isRefreshing()) {
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        }
+    }
+
+    private class updateID extends AsyncTask<Integer, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Toast.makeText(PriceChecker.this,"Fetching one asset",Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        protected Void doInBackground(Integer... position) {
+            String pageText;
+            try {
+                URL url = new URL("https://api.coinmarketcap.com/v1/ticker/"+position);
+                URLConnection conn = url.openConnection();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
+                pageText = reader.lines().collect(Collectors.joining("\n"));
+                Gson gson = new GsonBuilder().create();
+                assets.addAll(Arrays.asList(gson.fromJson(pageText, CryptoAsset[].class)));
+                Log.i(TAG, assets.toString());
             } catch (IOException | NetworkOnMainThreadException  e) {
                 e.printStackTrace();
             }
