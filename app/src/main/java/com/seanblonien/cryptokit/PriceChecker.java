@@ -11,8 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -22,14 +20,15 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class PriceChecker extends Activity {
     private String TAG = PriceChecker.class.getSimpleName();
     protected GetJSON getjson;
     protected List<CryptoAsset> assets;
-    private RecyclerView recyclerView;
     private RVAdapter rvadapter;
 
     @Override
@@ -37,7 +36,7 @@ public class PriceChecker extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.price_checker);
         assets = new ArrayList<>();
-        recyclerView = findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));

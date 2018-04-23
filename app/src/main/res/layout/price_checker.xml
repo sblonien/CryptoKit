@@ -27,7 +27,7 @@
             android:layout_height="match_parent"
             android:fontFamily="sans-serif"
             android:gravity="center"
-            android:text="              Name"
+            android:text="@string/placeholder_name"
             android:textColor="#000"
             android:textSize="14sp" />
 
@@ -37,7 +37,7 @@
             android:layout_height="match_parent"
             android:fontFamily="sans-serif"
             android:gravity="center"
-            android:text="Price USD"
+            android:text="@string/placeholder_price"
             android:textColor="#000"
             android:textSize="14sp" />
 
@@ -47,7 +47,7 @@
             android:layout_height="match_parent"
             android:fontFamily="sans-serif"
             android:gravity="center"
-            android:text="24h % Δ"
+            android:text="@string/placeholder_percent_change"
             android:textColor="#000"
             android:textSize="14sp" />
 
