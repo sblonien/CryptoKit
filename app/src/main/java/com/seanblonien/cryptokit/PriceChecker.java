@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.NetworkOnMainThreadException;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -25,11 +28,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PriceChecker extends Activity {
+public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefreshListener  {
     private String TAG = PriceChecker.class.getSimpleName();
     protected GetJSON getjson;
     protected List<CryptoAsset> assets;
     private RVAdapter rvadapter;
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +60,50 @@ public class PriceChecker extends Activity {
             }
         }));
 
+        mSwipeRefreshLayout = findViewById(R.id.swipe_container);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Log.i(TAG, "Refreshing all items");
+                fetchData();
+            }
+        });
+
+        fetchData();
+    }
+
+    private void fetchData() {
+        // Signal SwipeRefreshLayout to start the progress indicator
+        mSwipeRefreshLayout.setRefreshing(true);
         getjson = new GetJSON();
         getjson.execute();
+    }
+
+    /*
+     * Listen for option item selections so that we receive a notification
+     * when the user requests a refresh by selecting the refresh action bar item.
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            // Check if user triggered a refresh:
+            case R.id.swipe_container:
+                Log.i(TAG, "Refresh menu item selected");
+
+                fetchData();
+
+                return true;
+        }
+
+        // User didn't trigger a refresh, let the superclass handle this action
+        return super.onOptionsItemSelected(item);
+
+    }
+
+    @Override
+    public void onRefresh() {
+
     }
 
     private class GetJSON extends AsyncTask<Void, Void, Void> {
@@ -66,6 +112,7 @@ public class PriceChecker extends Activity {
         protected void onPreExecute() {
             super.onPreExecute();
             Toast.makeText(PriceChecker.this,"Fetching data",Toast.LENGTH_LONG).show();
+            assets.clear();
         }
 
         @Override
@@ -92,6 +139,9 @@ public class PriceChecker extends Activity {
         @Override
         protected void onPostExecute(Void result) {
             rvadapter.notifyDataSetChanged();
+            if(mSwipeRefreshLayout.isRefreshing()) {
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
         }
     }
 }

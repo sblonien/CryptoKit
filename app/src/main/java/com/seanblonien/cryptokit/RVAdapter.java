@@ -10,6 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.GlideBuilder;
+import com.bumptech.glide.GlideContext;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -57,13 +60,16 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AssetViewHolder> {
         holder.assetRank.setText(a.getRank().toString());
         holder.assetName.setText(a.getName());
         holder.assetSymbol.setText(a.getSymbol());
-        holder.assetPrice.setText("$ " + NumberFormat.getInstance().format(Math.round(a.getPrice_usd() * 100.0) / 100.0));
+        holder.assetPrice.setText("$ " + NumberFormat.getInstance().format(a.getPrice_usd() * 100.0 / 100.0));
         holder.assetPrice.setTextColor(Color.parseColor(a.getPercent_change_24h() < 0 ? "#cc0000" : "#009933"));
         holder.assetPercentChange24h.setText(NumberFormat.getInstance().format(Math.round(a.getPercent_change_1h() * 100.0) / 100.0)+"%");
         holder.assetPercentChange24h.setTextColor(Color.parseColor(a.getPercent_change_24h() < 0 ? "#cc0000" : "#009933"));
+        RequestOptions myOptions = new RequestOptions()
+                .fitCenter()
+                .centerCrop();
         Glide.with(context)
                 .load(a.getImage())
-                .fitCenter()
+                .apply(myOptions)
                 .into(holder.assetImage);
     }
 
