@@ -19,7 +19,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.google.firebase:firebase-auth:11.6.0'
+
     repositories {
         mavenCentral()
         jcenter()
@@ -41,6 +41,10 @@ dependencies {
     // Circle Image View
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    // Firebase
+    implementation 'com.google.firebase:firebase-auth:15.0.0'
+    // Expandable Layout
+    implementation 'com.github.aakira:expandable-layout:1.6.0@aar'
 }
 
 apply plugin: 'com.google.gms.google-services'

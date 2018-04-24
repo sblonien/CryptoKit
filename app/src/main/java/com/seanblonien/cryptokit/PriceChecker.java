@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -34,6 +35,7 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
     protected List<CryptoAsset> assets;
     private RVAdapter rvadapter;
     SwipeRefreshLayout mSwipeRefreshLayout;
+    ExpandableLinearLayout expandableLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +73,7 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
         });
 
         fetchData();
+
     }
 
     private void fetchData() {
@@ -123,7 +126,7 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
         protected Void doInBackground(Void... voids) {
             String pageText;
             try {
-                URL url = new URL("https://api.coinmarketcap.com/v1/ticker/");
+                URL url = new URL("https://api.coinmarketcap.com/v1/ticker/?limit=100");
                 URLConnection conn = url.openConnection();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
                 pageText = reader.lines().collect(Collectors.joining("\n"));
@@ -180,7 +183,7 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
                         .setPercent_change_24h(b.getPercent_change_24h())
                         .setVolume_usd(b.getVolume_usd())
                         .setLast_updated(b.getLast_updated());
-                Log.i(TAG, c.toString());
+                Log.i(TAG, assets.get(index).toString());
             } catch (IOException | NetworkOnMainThreadException  e) {
                 e.printStackTrace();
             }
