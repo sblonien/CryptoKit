@@ -83,7 +83,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/asset_image"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="14dp"
         android:orientation="vertical"
         app:ael_duration="400"
         app:ael_expanded="false">
@@ -95,25 +95,65 @@
         <!--android:layout_below="@id/asset_image"-->
         <!--android:gravity="center"-->
         <!--android:orientation="vertical">-->
-
-        <TextView
-            android:id="@+id/asset_volume"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:text="vol $10,000,000"
-            android:textColor="#000"
-            android:textSize="17sp" />
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/asset_market_cap"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/asset_market_cap"
-            android:text="cap $100,000,000"
-            android:textColor="#000"
-            android:textSize="17sp" />
+            <TextView
+                android:id="@+id/asset_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/asset_market_cap"
+                android:gravity="left"
+                android:text="lorem ipsum suum"
+                android:textColor="#000"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/asset_volume"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:gravity="left"
+                android:text="vol $10,000,000"
+                android:textColor="#000"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/asset_market_cap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/asset_volume"
+                android:gravity="left"
+                android:text="cap $100,000,000"
+                android:textColor="#000"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/asset_circulating_volume"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/asset_price_btc"
+                android:gravity="right"
+                android:text="circ 8,000,000"
+                android:textColor="#000"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/asset_price_btc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:gravity="right"
+                android:text="btc 0.05"
+                android:textColor="#000"
+                android:textSize="17sp" />
+
+
+        </RelativeLayout>
 
     </com.github.aakira.expandablelayout.ExpandableLinearLayout>
+
 
 </RelativeLayout>

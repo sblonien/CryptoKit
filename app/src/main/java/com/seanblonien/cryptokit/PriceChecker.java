@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -61,6 +63,7 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
         });
 
         fetchData();
+        fetchDescriptions();
 
         rvadapter = new RVAdapter(this, this.assets);
         recyclerView.setAdapter(rvadapter);
@@ -78,6 +81,15 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
             }
         }));
 
+    }
+
+    private void fetchDescriptions() {
+        private void doGetDescriptions(){
+            for(int i = 0 ; i < assets.size(); i++){
+                getDescription desc = new getDescription();
+                desc.execute(i);
+            }
+        }
     }
 
     private void fetchData() {
@@ -128,14 +140,14 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
 
         @Override
         protected Void doInBackground(Void... voids) {
-            String pageText;
+            String dataText, descripText;
             try {
-                URL url = new URL("https://api.coinmarketcap.com/v1/ticker/?limit=100");
-                URLConnection conn = url.openConnection();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
-                pageText = reader.lines().collect(Collectors.joining("\n"));
-                Gson gson = new GsonBuilder().create();
-                assets.addAll(Arrays.asList(gson.fromJson(pageText, CryptoAsset[].class)));
+                URL dataurl = new URL("https://api.coinmarketcap.com/v1/ticker/?limit=100");
+                URLConnection dataconn = dataurl.openConnection();
+                BufferedReader datareader = new BufferedReader(new InputStreamReader(dataconn.getInputStream(), StandardCharsets.UTF_8));
+                dataText = datareader.lines().collect(Collectors.joining("\n"));
+                Gson datagson = new GsonBuilder().create();
+                assets.addAll(Arrays.asList(datagson.fromJson(dataText, CryptoAsset[].class)));
                 for(CryptoAsset c : assets){
                     c.setImage("https://chasing-coins.com/api/v1/std/logo/"+c.getSymbol());
                 }
@@ -155,6 +167,7 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
             }
         }
     }
+
 
     private class updateID extends AsyncTask<Void, Void, Void> {
         Integer index;
@@ -201,6 +214,50 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
             if(mSwipeRefreshLayout.isRefreshing()) {
                 mSwipeRefreshLayout.setRefreshing(false);
             }
+        }
+    }
+
+    private class getDescription extends AsyncTask<Integer, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Integer... position) {
+            CryptoAsset myAsset = assets.get(position[0]);
+            String descripText;
+            try {
+                URL url = new URL("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles="+myAsset.getName());
+                URLConnection conn = url.openConnection();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
+                descripText = reader.lines().collect(Collectors.joining("\n"));
+                //Log.i(TAG, "TEXT: " + descripText);
+                Gson gson = new GsonBuilder().create();
+                JsonObject obj = gson.fromJson(descripText, JsonObject.class);
+                String key = obj.getAsJsonObject("query").getAsJsonObject("pages").keySet().toString().replace("[", "").replace("]","");
+                JsonElement jsonElement = obj.getAsJsonObject("query")
+                        .getAsJsonObject("pages")
+                        .getAsJsonObject(key)
+                        .get("extract");
+                if(jsonElement == null || key.compareTo("-1") == 0){
+                    //Log.i(TAG, "No Descript Found!");
+                    myAsset.setDescription("No description found!");
+                } else {
+                    myAsset.setDescription(jsonElement.getAsString());
+                }
+                //Log.i(TAG, myAsset.toString());
+            } catch (IOException | NetworkOnMainThreadException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            rvadapter.notifyDataSetChanged();
         }
     }
 }
