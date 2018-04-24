@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Toast;
 
 import com.github.aakira.expandablelayout.ExpandableLinearLayout;
@@ -40,6 +41,8 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Remove title bar
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.price_checker);
         assets = new ArrayList<>();
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
@@ -47,6 +50,18 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        mSwipeRefreshLayout = findViewById(R.id.swipe_container);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Log.i(TAG, "Refreshing all items");
+                fetchData();
+            }
+        });
+
+        fetchData();
+
         rvadapter = new RVAdapter(this, this.assets);
         recyclerView.setAdapter(rvadapter);
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
@@ -62,17 +77,6 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
 
             }
         }));
-
-        mSwipeRefreshLayout = findViewById(R.id.swipe_container);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                Log.i(TAG, "Refreshing all items");
-                fetchData();
-            }
-        });
-
-        fetchData();
 
     }
 

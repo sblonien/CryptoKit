@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +20,14 @@ import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 import com.github.aakira.expandablelayout.Utils;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AssetViewHolder> {
     private static final String TAG = "RVAdapter";
     private Context context;
     private List<CryptoAsset> assets;
+    private AssetViewHolder previousHolder;
     private SparseBooleanArray expandState = new SparseBooleanArray();
 
     RVAdapter(Context context, List<CryptoAsset> a){
@@ -49,42 +52,45 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AssetViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final AssetViewHolder holder, final int position) {
-        final CryptoAsset a = assets.get(position);
-        holder.assetRank.setText(a.getRank().toString());
-        holder.assetName.setText(a.getName());
-        holder.assetSymbol.setText(a.getSymbol());
-        holder.assetPrice.setText("$ " + NumberFormat.getInstance().format(a.getPrice_usd() * 100.0 / 100.0));
-        holder.assetPrice.setTextColor(Color.parseColor(a.getPercent_change_24h() < 0 ? "#cc0000" : "#009933"));
-        holder.assetPercentChange24h.setText(NumberFormat.getInstance().format(Math.round(a.getPercent_change_24h() * 100.0) / 100.0)+"%");
-        holder.assetPercentChange24h.setTextColor(Color.parseColor(a.getPercent_change_24h() < 0 ? "#cc0000" : "#009933"));
-        RequestOptions myOptions = new RequestOptions()
-                .fitCenter()
-                .centerCrop();
-        Glide.with(context)
-                .load(a.getImage())
-                .apply(myOptions)
-                .into(holder.assetImage);
-        holder.expandableLayout.setInRecyclerView(true);
-        holder.expandableLayout.setInterpolator(Utils.createInterpolator(Utils.LINEAR_OUT_SLOW_IN_INTERPOLATOR));
-        holder.expandableLayout.setExpanded(expandState.get(position));
-        holder.expandableLayout.setListener(new ExpandableLayoutListenerAdapter() {
-            @Override
-            public void onPreOpen() {
-                expandState.put(position, true);
-            }
+            final CryptoAsset a = assets.get(position);
+            holder.assetRank.setText(a.getRank().toString());
+            holder.assetName.setText(a.getName());
+            holder.assetSymbol.setText(a.getSymbol());
+            holder.assetPrice.setText("$ " + NumberFormat.getInstance().format(a.getPrice_usd() * 100.0 / 100.0));
+            holder.assetPrice.setTextColor(Color.parseColor(a.getPercent_change_24h() < 0 ? "#cc0000" : "#009933"));
+            holder.assetPercentChange24h.setText(NumberFormat.getInstance().format(Math.round(a.getPercent_change_24h() * 100.0) / 100.0) + "%");
+            holder.assetPercentChange24h.setTextColor(Color.parseColor(a.getPercent_change_24h() < 0 ? "#cc0000" : "#009933"));
+            RequestOptions myOptions = new RequestOptions()
+                    .fitCenter()
+                    .centerCrop();
+            Glide.with(context)
+                    .load(a.getImage())
+                    .apply(myOptions)
+                    .into(holder.assetImage);
+            holder.setIsRecyclable(false);
+            holder.expandableLayout.setInRecyclerView(true);
+            holder.expandableLayout.setInterpolator(Utils.createInterpolator(Utils.LINEAR_OUT_SLOW_IN_INTERPOLATOR));
+            holder.expandableLayout.setExpanded(false);
+            holder.expandableLayout.setBackgroundColor(Color.WHITE);
+            holder.expandableLayout.setExpanded(expandState.get(position));
+            holder.expandableLayout.setListener(new ExpandableLayoutListenerAdapter() {
+                @Override
+                public void onPreOpen() {
+                    expandState.put(position, true);
+                }
 
-            @Override
-            public void onPreClose() {
-                expandState.put(position, false);
-            }
-        });
-        holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onPreClose() {
+                    expandState.put(position, false);
+                }
+            });
+
+            holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 holder.expandableLayout.toggle();
             }
         });
-
     }
 
     @Override

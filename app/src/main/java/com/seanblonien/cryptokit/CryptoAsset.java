@@ -19,13 +19,7 @@ public class CryptoAsset {
     private Float percent_change_7d;
     private Long last_updated;
     private String image;
-
-    CryptoAsset(String name, Double price, Float percent, String image) {
-        this.name = name;
-        this.price_usd = price;
-        this.percent_change_1h = percent;
-        this.image = image;
-    }
+    private String description;
 
     @Override
     public String toString() {
@@ -46,7 +40,17 @@ public class CryptoAsset {
                 ", percent_change_7d=" + percent_change_7d +
                 ", last_updated=" + last_updated +
                 ", image='" + image + '\'' +
+                ", description='" + description + '\'' +
                 '}';
+    }
+
+
+
+    CryptoAsset(String name, Double price, Float percent, String image) {
+        this.name = name;
+        this.price_usd = price;
+        this.percent_change_1h = percent;
+        this.image = image;
     }
 
     public String getImage() {
@@ -184,5 +188,13 @@ public class CryptoAsset {
     public CryptoAsset setLast_updated(Long last_updated) {
         this.last_updated = last_updated;
         return this;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
