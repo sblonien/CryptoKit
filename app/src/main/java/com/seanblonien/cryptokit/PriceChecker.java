@@ -80,6 +80,7 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
         // Signal SwipeRefreshLayout to start the progress indicator
         mSwipeRefreshLayout.setRefreshing(true);
         getjson = new GetJSON();
+        Toast.makeText(PriceChecker.this,"Fetching data",Toast.LENGTH_LONG).show();
         getjson.execute();
     }
 
@@ -118,7 +119,6 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Toast.makeText(PriceChecker.this,"Fetching data",Toast.LENGTH_LONG).show();
             assets.clear();
         }
 
