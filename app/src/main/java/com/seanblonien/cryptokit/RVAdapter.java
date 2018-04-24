@@ -31,29 +31,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AssetViewHolder> {
     private List<CryptoAsset> assets;
     private SparseBooleanArray expandState = new SparseBooleanArray();
 
-    static class AssetViewHolder extends RecyclerView.ViewHolder {
-        ImageView assetImage;
-        TextView assetSymbol;
-        TextView assetRank;
-        TextView assetName;
-        TextView assetPrice;
-        TextView assetPercentChange24h;
-        ExpandableLinearLayout expandableLayout;
-        RelativeLayout relativeLayout;
-
-        AssetViewHolder(View itemView) {
-            super(itemView);
-            assetRank = itemView.findViewById(R.id.asset_rank);
-            assetImage = itemView.findViewById(R.id.asset_image);
-            assetName = itemView.findViewById(R.id.asset_name);
-            assetPrice = itemView.findViewById(R.id.asset_price);
-            assetSymbol = itemView.findViewById(R.id.asset_symbol);
-            assetPercentChange24h = itemView.findViewById(R.id.asset_percent_change_24h);
-            expandableLayout = itemView.findViewById(R.id.expandableLayout);
-            relativeLayout = itemView.findViewById(R.id.relative_card);
-        }
-    }
-
     RVAdapter(Context context, List<CryptoAsset> a){
         this.context = context;
         this.assets = a;
@@ -75,14 +52,14 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AssetViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(final AssetViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final AssetViewHolder holder, final int position) {
         final CryptoAsset a = assets.get(position);
         holder.assetRank.setText(a.getRank().toString());
         holder.assetName.setText(a.getName());
         holder.assetSymbol.setText(a.getSymbol());
         holder.assetPrice.setText("$ " + NumberFormat.getInstance().format(a.getPrice_usd() * 100.0 / 100.0));
         holder.assetPrice.setTextColor(Color.parseColor(a.getPercent_change_24h() < 0 ? "#cc0000" : "#009933"));
-        holder.assetPercentChange24h.setText(NumberFormat.getInstance().format(Math.round(a.getPercent_change_1h() * 100.0) / 100.0)+"%");
+        holder.assetPercentChange24h.setText(NumberFormat.getInstance().format(Math.round(a.getPercent_change_24h() * 100.0) / 100.0)+"%");
         holder.assetPercentChange24h.setTextColor(Color.parseColor(a.getPercent_change_24h() < 0 ? "#cc0000" : "#009933"));
         RequestOptions myOptions = new RequestOptions()
                 .fitCenter()
@@ -108,16 +85,35 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AssetViewHolder> {
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                onClickButton(holder.expandableLayout);
+                holder.expandableLayout.toggle();
             }
         });
 
     }
 
-    private void onClickButton(final ExpandableLayout expandableLayout) {
-        expandableLayout.toggle();
-    }
-
     @Override
     public int getItemCount() { return assets.size(); }
+
+    static class AssetViewHolder extends RecyclerView.ViewHolder {
+        ImageView assetImage;
+        TextView assetSymbol;
+        TextView assetRank;
+        TextView assetName;
+        TextView assetPrice;
+        TextView assetPercentChange24h;
+        ExpandableLinearLayout expandableLayout;
+        RelativeLayout relativeLayout;
+
+        AssetViewHolder(View itemView) {
+            super(itemView);
+            assetRank = itemView.findViewById(R.id.asset_rank);
+            assetImage = itemView.findViewById(R.id.asset_image);
+            assetName = itemView.findViewById(R.id.asset_name);
+            assetPrice = itemView.findViewById(R.id.asset_price);
+            assetSymbol = itemView.findViewById(R.id.asset_symbol);
+            assetPercentChange24h = itemView.findViewById(R.id.asset_percent_change_24h);
+            expandableLayout = itemView.findViewById(R.id.expandableLayout);
+            relativeLayout = itemView.findViewById(R.id.relative_card);
+        }
+    }
 }

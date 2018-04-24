@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="80dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical"
@@ -12,11 +11,12 @@
 
     <TextView
         android:id="@+id/asset_rank"
-        android:layout_width="wrap_content"
+        android:layout_width="32dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:text="1"
+        android:textAlignment="center"
         android:textColor="#000"
         android:textSize="17sp" />
 
@@ -76,25 +76,28 @@
         android:textSize="17sp"
         tools:ignore="HardcodedText" />
 
-    <com.github.aakira.expandablelayout.ExpandableLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <com.github.aakira.expandablelayout.ExpandableLinearLayout
         android:id="@+id/expandableLayout"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_below="@id/asset_image"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
         android:orientation="vertical"
-        app:ael_interpolator="bounce"
-        app:ael_orientation="vertical">
+        app:ael_duration="400"
+        app:ael_expanded="false">
+        <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--xmlns:tools="http://schemas.android.com/tools"-->
+        <!--android:id="@+id/expandableLayout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="120dp"-->
+        <!--android:layout_below="@id/asset_image"-->
+        <!--android:gravity="center"-->
+        <!--android:orientation="vertical">-->
 
         <TextView
             android:id="@+id/asset_volume"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/asset_symbol"
             android:text="vol $10,000,000"
             android:textColor="#000"
             android:textSize="17sp" />
@@ -103,8 +106,7 @@
             android:id="@+id/asset_market_cap"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/asset_volume"
+            android:layout_below="@id/asset_market_cap"
             android:text="cap $100,000,000"
             android:textColor="#000"
             android:textSize="17sp" />
