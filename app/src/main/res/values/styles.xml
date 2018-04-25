@@ -1,12 +1,25 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
+    <!--<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
+        <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
+        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
+        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+        <!--<item name="colorAccent">@color/colorAccent</item>-->
+    <!--</style>-->
 
-    <style name="Theme.AppTheme.NoActionBar.CryptoKit" parent="Theme.AppCompat.NoActionBar" />
+
+    <style name="Theme.AppCompat.Light.CryptoKit" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#CD2027</item>
+        <item name="colorPrimaryDark">#44459C</item>
+        <item name="android:navigationBarColor">#44459C</item>
+        <item name="android:colorForeground">#44459C</item>
+        <item name="colorAccent">#CD2027</item>
+        <item name="android:textColorPrimary">#222222</item>
+        <item name="android:textColorPrimaryInverse">#CA0C87</item>
+        <item name="android:colorBackground">#FAFAFA</item>
+        <item name="android:windowBackground">#FAFAFA</item>
+        <item name="android:textColorSecondary">#FF55D4</item>
+    </style>
 
 </resources>

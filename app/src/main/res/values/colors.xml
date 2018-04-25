@@ -20,4 +20,12 @@
     <color name="btn_login_bg">#eceef1</color>
     <color name="lbl_name">#333333</color>
     <color name="btn_logut_bg">#ff6861</color>
+    <color name="accent_material_dark">#cd2027</color>
+    <color name="foreground_material_dark">#44459c</color>
+    <color name="background_material_dark">#ffffff</color>
+    <color name="text_color_primary">#000000</color>
+    <color name="primary_material_dark">#cd2027</color>
+    <color name="myBlue">#44459c</color>
+    <color name="primary_dark_material_dark">#44459c</color>
+    <color name="colorBackground">#0a4d44</color>
 </resources>

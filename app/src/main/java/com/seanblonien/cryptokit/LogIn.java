@@ -90,6 +90,7 @@ public class LogIn extends AppCompatActivity {
 
                 mProgressbar.setVisibility(View.VISIBLE);
 
+                final int length = password.length();
                 // Authenticate user
                 mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(LogIn.this, new OnCompleteListener<AuthResult>() {
@@ -101,7 +102,7 @@ public class LogIn extends AppCompatActivity {
                                 mProgressbar.setVisibility(View.GONE);
                                 if (!task.isSuccessful()) {
                                     // there was an error
-                                    if (password.length() < 6) {
+                                    if (length < 6) {
                                         mPassword.setError(getString(R.string.minimum_password));
                                     } else {
                                         Toast.makeText(LogIn.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
