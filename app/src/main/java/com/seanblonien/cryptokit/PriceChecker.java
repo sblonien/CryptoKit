@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.apache.commons.io.IOUtils;
 
 public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefreshListener {
     protected GetJSON getjson;
@@ -71,14 +70,14 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
             @Override
             public void onClick(View view, int position) {
                 CryptoAsset asset = assets.get(position);
-                updateData(position);
+                updateData(asset);
                 Toast.makeText(getApplicationContext(), asset.getName() + " updated!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onLongClick(View view, int position) {
                 CryptoAsset asset = assets.get(position);
-                updateData(position);
+                updateData(asset);
                 Toast.makeText(getApplicationContext(), asset.getName() + " refreshed!", Toast.LENGTH_SHORT).show();
             }
         }));
@@ -91,9 +90,9 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
         getjson.execute();
     }
 
-    private void updateData(int position) {
-        updateID u = new updateID(position);
-
+    private void updateData(CryptoAsset a) {
+        updateID u = new updateID(a, rvadapter, mSwipeRefreshLayout);
+        u.execute();
     }
 
     /*
@@ -119,6 +118,94 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
     @Override
     public void onRefresh() {
 
+    }
+
+    private static class updateID extends AsyncTask<Void, Void, Void> {
+        CryptoAsset mAsset;
+        RVAdapter mAdapter;
+        SwipeRefreshLayout swipeRefreshLayout;
+
+        updateID(CryptoAsset a, RVAdapter r, SwipeRefreshLayout s) {
+            this.mAsset = a;
+            this.mAdapter = r;
+            this.swipeRefreshLayout = s;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            swipeRefreshLayout.setRefreshing(true);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            String dataText, descripText;
+            URL dataURL, descripURL;
+            URLConnection dataConnection = null, descripConnection = null;
+            BufferedReader dataReader = null, descripReader = null;
+            try {
+                dataURL = new URL("https://api.coinmarketcap.com/v1/ticker/" + mAsset.getId());
+                dataConnection = dataURL.openConnection();
+                dataReader = new BufferedReader(new InputStreamReader(dataConnection.getInputStream(), StandardCharsets.UTF_8));
+                dataText = dataReader.lines().collect(Collectors.joining("\n"));
+                Gson dataGson = new GsonBuilder().create();
+                List<CryptoAsset> c;
+                c = Arrays.asList(dataGson.fromJson(dataText, CryptoAsset[].class));
+                CryptoAsset b = c.get(0);
+                mAsset
+                        .setPrice_usd(b.getPrice_usd())
+                        .setPrice_btc(b.getPrice_btc())
+                        .setPercent_change_1h(b.getPercent_change_1h())
+                        .setPercent_change_24h(b.getPercent_change_24h())
+                        .setVolume_usd(b.getVolume_usd())
+                        .setLast_updated(b.getLast_updated());
+
+                descripURL = new URL("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=" + b.getName());
+                descripConnection = descripURL.openConnection();
+                descripReader = new BufferedReader(new InputStreamReader(descripConnection.getInputStream(), StandardCharsets.UTF_8));
+                descripText = descripReader.lines().collect(Collectors.joining("\n"));
+                //Log.i(TAG, "TEXT: " + descripText);
+                Gson descripGson = new GsonBuilder().create();
+                JsonObject obj = descripGson.fromJson(descripText, JsonObject.class);
+                String key = obj.getAsJsonObject("query").getAsJsonObject("pages").keySet().toString().replace("[", "").replace("]", "");
+                JsonElement jsonElement = obj.getAsJsonObject("query")
+                        .getAsJsonObject("pages")
+                        .getAsJsonObject(key)
+                        .get("extract");
+                if (jsonElement == null || key.compareTo("-1") == 0) {
+                    mAsset.setDescription("No description found!");
+                } else {
+                    String myString = jsonElement.getAsString();
+                    if (myString.contains(".")) {
+                        mAsset.setDescription(jsonElement.getAsString());
+                    }
+                }
+                //Log.i(TAG, assets.get(index).toString());
+            } catch (IOException | NetworkOnMainThreadException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    dataReader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    descripReader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            mAdapter.notifyDataSetChanged();
+            if (swipeRefreshLayout.isRefreshing()) {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }
     }
 
     private class GetJSON extends AsyncTask<Void, Void, Void> {
@@ -147,95 +234,9 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
                 Log.i(TAG, assets.toString());
             } catch (IOException | NetworkOnMainThreadException e) {
                 e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            rvadapter.notifyDataSetChanged();
-            if (mSwipeRefreshLayout.isRefreshing()) {
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-        }
-    }
-
-
-    private class updateID extends AsyncTask<Void, Void, Void> {
-        Integer index;
-
-        updateID(Integer i) {
-            this.index = i;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mSwipeRefreshLayout.setRefreshing(true);
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            String dataText, descripText;
-            URL dataURL, descripURL;
-            URLConnection dataConnection = null, descripConnection = null;
-            BufferedReader dataReader = null, descripReader = null;
-            try {
-                dataURL = new URL("https://api.coinmarketcap.com/v1/ticker/" + assets.get(index).getId());
-                dataConnection = dataURL.openConnection();
-                dataReader = new BufferedReader(new InputStreamReader(dataConnection.getInputStream(), StandardCharsets.UTF_8));
-                dataText = dataReader.lines().collect(Collectors.joining("\n"));
-                Gson dataGson = new GsonBuilder().create();
-                List<CryptoAsset> c;
-                c = Arrays.asList(dataGson.fromJson(dataText, CryptoAsset[].class));
-                CryptoAsset b = c.get(0);
-                assets.get(index)
-                        .setPrice_usd(b.getPrice_usd())
-                        .setPrice_btc(b.getPrice_btc())
-                        .setPercent_change_1h(b.getPercent_change_1h())
-                        .setPercent_change_24h(b.getPercent_change_24h())
-                        .setVolume_usd(b.getVolume_usd())
-                        .setLast_updated(b.getLast_updated());
-                // Log.i(TAG, assets.get(index).toString());
-
-
-
-
-                descripURL = new URL("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles="+myAsset.getName());
-                descripConnection = descripURL.openConnection();
-                descripReader = new BufferedReader(new InputStreamReader(descripConnection.getInputStream(), StandardCharsets.UTF_8));
-                descripText = descripReader.lines().collect(Collectors.joining("\n"));
-                //Log.i(TAG, "TEXT: " + descripText);
-                Gson descripGson = new GsonBuilder().create();
-                JsonObject obj = descripGson.fromJson(descripText, JsonObject.class);
-                String key = obj.getAsJsonObject("query").getAsJsonObject("pages").keySet().toString().replace("[", "").replace("]","");
-                JsonElement jsonElement = obj.getAsJsonObject("query")
-                        .getAsJsonObject("pages")
-                        .getAsJsonObject(key)
-                        .get("extract");
-                if(jsonElement == null || key.compareTo("-1") == 0){
-                    //Log.i(TAG, "No Descript Found!");
-                    assets.get(index).setDescription("No description found!");
-                } else {
-                    String myString = jsonElement.getAsString();
-                    if(myString.contains(".")){
-                        assets.get(index).setDescription(jsonElement.getAsString());
-                    }
-                }
-            } catch (IOException | NetworkOnMainThreadException e) {
-                e.printStackTrace();
             } finally {
-                if(dataReader != null){
-                    dataReader.close();
-                }
-                if(descripReader != null){
-                    descripReader.close();
-                }
+
             }
-
-
-
 
             return null;
         }
@@ -246,58 +247,6 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
             if (mSwipeRefreshLayout.isRefreshing()) {
                 mSwipeRefreshLayout.setRefreshing(false);
             }
-        }
-    }
-
-    private class getDescription extends AsyncTask<Void, Void, Void> {
-        RVAdapter.AssetViewHolder holder;
-
-        public getDescription(RVAdapter.AssetViewHolder holder) {
-            this.holder = holder;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            CryptoAsset myAsset = assets.get(holder.getLayoutPosition());
-            String descripText;
-            try {
-                URL url = new URL("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles="+myAsset.getName());
-                URLConnection conn = url.openConnection();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
-                descripText = reader.lines().collect(Collectors.joining("\n"));
-                //Log.i(TAG, "TEXT: " + descripText);
-                Gson gson = new GsonBuilder().create();
-                JsonObject obj = gson.fromJson(descripText, JsonObject.class);
-                String key = obj.getAsJsonObject("query").getAsJsonObject("pages").keySet().toString().replace("[", "").replace("]","");
-                JsonElement jsonElement = obj.getAsJsonObject("query")
-                        .getAsJsonObject("pages")
-                        .getAsJsonObject(key)
-                        .get("extract");
-                if(jsonElement == null || key.compareTo("-1") == 0){
-                    //Log.i(TAG, "No Descript Found!");
-                    myAsset.setDescription("No description found!");
-                } else {
-                    String myString = jsonElement.getAsString();
-                    if(myString.contains(".")){
-                        myAsset.setDescription(jsonElement.getAsString());
-                    }
-                }
-                //Log.i(TAG, myAsset.toString());
-            } catch (IOException | NetworkOnMainThreadException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            rvadapter.notifyItemChanged(holder.getLayoutPosition());
         }
     }
 }
