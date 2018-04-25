@@ -70,7 +70,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AssetViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull final AssetViewHolder holder, final int position) {
             final CryptoAsset a = assets.get(holder.getLayoutPosition());
-            int i = position;
             DecimalFormat dollarFormat = new DecimalFormat("¤###,###,###,##0.00##");
             DecimalFormat percentFormat = new DecimalFormat("#0.00'%'");
             DecimalFormat bitcoinFormat = new DecimalFormat("#0.00######");
