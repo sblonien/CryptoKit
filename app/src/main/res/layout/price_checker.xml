@@ -17,7 +17,6 @@
             android:fontFamily="sans-serif"
             android:gravity="center"
             android:text="@string/price_checker"
-            android:textColor="#000"
             android:textSize="30sp" />
 
         <Button
@@ -40,7 +39,6 @@
             android:fontFamily="sans-serif"
             android:gravity="center"
             android:text="@string/placeholder_name"
-            android:textColor="#000"
             android:textSize="14sp" />
 
         <TextView
@@ -50,7 +48,6 @@
             android:fontFamily="sans-serif"
             android:gravity="center"
             android:text="@string/placeholder_price"
-            android:textColor="#000"
             android:textSize="14sp" />
 
         <TextView
@@ -60,7 +57,6 @@
             android:fontFamily="sans-serif"
             android:gravity="center"
             android:text="@string/placeholder_percent_change"
-            android:textColor="#000"
             android:textSize="14sp" />
 
     </LinearLayout>

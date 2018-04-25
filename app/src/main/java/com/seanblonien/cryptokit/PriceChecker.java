@@ -139,7 +139,6 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mSwipeRefreshLayout.setRefreshing(true);
         }
 
         @Override
@@ -213,9 +212,6 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
         protected void onPostExecute(Void result) {
             // Notify the layout adapter that one of the values has changed
             mAdapter.notifyDataSetChanged();
-            if (mSwipeRefreshLayout.isRefreshing()) {
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
         }
     }
 
