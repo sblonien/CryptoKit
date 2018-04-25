@@ -10,16 +10,16 @@
 
     <style name="Theme.AppCompat.Light.CryptoKit" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#CD2027</item>
-        <item name="colorPrimaryDark">#44459C</item>
-        <item name="android:navigationBarColor">#44459C</item>
-        <item name="android:colorForeground">#44459C</item>
-        <item name="colorAccent">#CD2027</item>
-        <item name="android:textColorPrimary">#222222</item>
-        <item name="android:textColorPrimaryInverse">#CA0C87</item>
-        <item name="android:colorBackground">#FAFAFA</item>
-        <item name="android:windowBackground">#FAFAFA</item>
-        <item name="android:textColorSecondary">#FF55D4</item>
+        <item name="android:colorPrimary">@color/m_red</item>
+        <item name="android:colorPrimaryDark">@color/m_blue</item>
+        <item name="android:navigationBarColor">@color/m_blue</item>
+        <item name="android:colorForeground">@color/m_blue</item>
+        <item name="android:colorAccent">@color/m_red</item>
+        <item name="android:textColorPrimary">@color/m_gray</item>
+        <item name="android:textColorPrimaryInverse">@color/m_hot_pink</item>
+        <item name="android:colorBackground">@color/m_white</item>
+        <item name="android:windowBackground">@color/m_white</item>
+        <item name="android:textColorSecondary">@color/m_light_pink</item>
     </style>
 
 </resources>

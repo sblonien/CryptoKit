@@ -1,6 +1,7 @@
 package com.seanblonien.cryptokit;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.NetworkOnMainThreadException;
@@ -12,9 +13,11 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.aakira.expandablelayout.ExpandableLinearLayout;
+import com.google.android.gms.signin.SignIn;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -38,6 +41,7 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
     private SwipeRefreshLayout mSwipeRefreshLayout;
     ExpandableLinearLayout expandableLayout;
     private RVAdapter mRVAdapter;
+    private TextView mBtnLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +51,14 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
 
         // Allocate the ArrayList to store the crypto assets
         myAssets = new ArrayList<>();
+        mBtnLogout = findViewById(R.id.logout_button);
+        mBtnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(PriceChecker.this, LogIn.class));
+                finish();
+            }
+        });
         // Get a reference to the Recycler View and initialize it
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);

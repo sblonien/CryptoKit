@@ -18,7 +18,7 @@
         android:text="1"
         android:textAlignment="center"
         android:textColor="#000"
-        android:textSize="17sp" />
+        android:textSize="@dimen/card_font_size" />
 
     <ImageView
         android:id="@+id/asset_image"
@@ -40,7 +40,7 @@
         android:layout_marginTop="13dp"
         android:text="Ethereum"
         android:textColor="#000"
-        android:textSize="17sp" />
+        android:textSize="@dimen/card_font_size" />
 
     <TextView
         android:id="@+id/asset_symbol"
@@ -50,7 +50,7 @@
         android:layout_marginTop="46dp"
         android:text="ETH"
         android:textColor="#000"
-        android:textSize="17sp" />
+        android:textSize="@dimen/card_font_size" />
 
     <TextView
         android:id="@+id/asset_price"
@@ -62,7 +62,7 @@
         android:gravity="center"
         android:text="$100"
         android:textColor="#000"
-        android:textSize="17sp" />
+        android:textSize="@dimen/card_font_size" />
 
     <TextView
         android:id="@+id/asset_percent_change_24h"
@@ -74,7 +74,7 @@
         android:gravity="center"
         android:text="5%"
         android:textColor="#000"
-        android:textSize="17sp"
+        android:textSize="@dimen/card_font_size"
         tools:ignore="HardcodedText" />
 
     <com.github.aakira.expandablelayout.ExpandableLinearLayout
@@ -83,25 +83,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/asset_image"
-        android:layout_marginTop="14dp"
         android:orientation="vertical"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
         app:ael_duration="400"
-        app:ael_expanded="false">
+        app:ael_expanded="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/asset_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_below="@id/asset_market_cap"
-                android:gravity="left"
-                android:text="lorem ipsum suum"
-                android:textColor="#000"
-                android:textSize="17sp" />
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
 
             <TextView
                 android:id="@+id/asset_volume"
@@ -111,7 +103,7 @@
                 android:gravity="left"
                 android:text="vol $10,000,000"
                 android:textColor="#000"
-                android:textSize="17sp" />
+                android:textSize="@dimen/card_font_size" />
 
             <TextView
                 android:id="@+id/asset_market_cap"
@@ -121,17 +113,17 @@
                 android:gravity="left"
                 android:text="cap $100,000,000"
                 android:textColor="#000"
-                android:textSize="17sp" />
+                android:textSize="@dimen/card_font_size" />
 
             <TextView
-                android:id="@+id/asset_circulating_volume"
+                android:id="@+id/asset_supply"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/asset_price_btc"
-                android:gravity="right"
-                android:text="circ 8,000,000"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/asset_market_cap"
+                android:gravity="left"
+                android:text="supply 8,000,000"
                 android:textColor="#000"
-                android:textSize="17sp" />
+                android:textSize="@dimen/card_font_size" />
 
             <TextView
                 android:id="@+id/asset_price_btc"
@@ -141,11 +133,35 @@
                 android:gravity="right"
                 android:text="btc 0.05"
                 android:textColor="#000"
-                android:textSize="17sp" />
+                android:textSize="@dimen/card_font_size" />
+
+            <TextView
+                android:id="@+id/asset_max_supply"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/asset_supply"
+                android:gravity="left"
+                android:text="max supply 8,000,000"
+                android:textColor="#000"
+                android:textSize="@dimen/card_font_size" />
+
+            <TextView
+                android:id="@+id/asset_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_below="@id/asset_max_supply"
+                android:layout_marginTop="73dp"
+                android:gravity="left"
+                android:paddingTop="10dp"
+                android:text="lorem ipsum suum"
+                android:textColor="#000"
+                android:textSize="@dimen/card_font_size" />
 
 
         </RelativeLayout>
-
     </com.github.aakira.expandablelayout.ExpandableLinearLayout>
 
 

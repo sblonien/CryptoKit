@@ -23,7 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class LogIn extends AppCompatActivity {
     // UI references.
     private EditText mEmail, mPassword;
-    private Button mBtnSignup, mBtnLogin, mBtnReset;
+    private Button mBtnSignup, mBtnLogin, mBtnReset, mSignout;
     private ProgressBar mProgressbar;
     private FirebaseAuth mAuth;
 
@@ -35,6 +35,7 @@ public class LogIn extends AppCompatActivity {
 
         //Get Firebase auth instance
         mAuth = FirebaseAuth.getInstance();
+        mAuth.signOut();
 
         // Go to main task if user is already logged in
         if (mAuth.getCurrentUser() != null) {
@@ -51,6 +52,7 @@ public class LogIn extends AppCompatActivity {
         mBtnSignup = findViewById(R.id.btn_signup);
         mBtnLogin = findViewById(R.id.btn_login);
         mBtnReset = findViewById(R.id.btn_reset_password);
+
 
         //Get Firebase auth instance
         mAuth = FirebaseAuth.getInstance();
@@ -121,6 +123,10 @@ public class LogIn extends AppCompatActivity {
     private void startNextActivity() {
         startActivity(new Intent(LogIn.this, PriceChecker.class));
         finish();
+    }
+
+    public void signOut() {
+        mAuth.signOut();
     }
 
     /*@Override
