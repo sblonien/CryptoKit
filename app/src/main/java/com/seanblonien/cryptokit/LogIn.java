@@ -35,7 +35,7 @@ public class LogIn extends AppCompatActivity {
 
         //Get Firebase auth instance
         mAuth = FirebaseAuth.getInstance();
-        mAuth.signOut();
+        //mAuth.signOut();
 
         // Go to main task if user is already logged in
         if (mAuth.getCurrentUser() != null) {

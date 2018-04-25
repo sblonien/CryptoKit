@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 import com.google.android.gms.signin.SignIn;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -55,6 +56,8 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
         mBtnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                mAuth.signOut();
                 startActivity(new Intent(PriceChecker.this, LogIn.class));
                 finish();
             }
@@ -178,16 +181,14 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
                         .getAsJsonObject("pages")
                         .getAsJsonObject(key)
                         .get("extract");
-                // If there was a problem with the json element or the element was not found, set the
-                // default description
-                if (jsonElement == null || key.compareTo("-1") == 0) {
-                    mAsset.setDescription(mAsset.getName()+" description.");
+                String myString;
+                // If the json element was properly found and the string contain a period
+                if(jsonElement != null && (myString = jsonElement.getAsString()).contains(".")) {
+                    // Set the description accordingly
+                    mAsset.setDescription(myString);
                 } else {
                     // Otherwise set the appropriate description for this asset
-                    String myString = jsonElement.getAsString();
-                    if (myString.contains(".")) {
-                        mAsset.setDescription(jsonElement.getAsString());
-                    }
+                    mAsset.setDescription(mAsset.getName()+" description.");
                 }
                 //Log.i(TAG, mAsset.toString());
             } catch (IOException | NetworkOnMainThreadException e) {

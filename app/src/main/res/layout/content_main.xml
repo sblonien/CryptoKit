@@ -8,7 +8,8 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/price_checker"
     tools:context=".PriceChecker"
-    android:id="@+id/swipe_container">
+    android:id="@+id/swipe_container"
+    android:theme="@style/Theme.AppCompat.Light.NoActionBar.CryptoKit">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
