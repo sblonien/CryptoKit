@@ -1,128 +1,82 @@
 package com.seanblonien.cryptokit;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
-import android.app.LoaderManager.LoaderCallbacks;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Window;
-import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.Api;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-import java.io.FileDescriptor;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LogIn extends AppCompatActivity implements LoaderCallbacks<Cursor>, GoogleApiClient.OnConnectionFailedListener {
-
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
-    private static final int REQUEST_READ_CONTACTS = 0;
-
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
-
+public class LogIn extends AppCompatActivity {
     // UI references.
-    private EditText inputEmail, inputPassword;
-    private Button btnSignIn, btnSignUp, btnResetPassword;
-    private ProgressBar progressBar;
-
+    private EditText mEmail, mPassword;
+    private Button mBtnSignup, mBtnLogin, mBtnReset;
+    private ProgressBar mProgressbar;
     private FirebaseAuth mAuth;
-    private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Remove title bar
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.log_in);
 
         //Get Firebase auth instance
-        mAuth= FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
-        btnSignIn = (Button) findViewById(R.id.sign_in_button);
-        btnSignUp = (Button) findViewById(R.id.sign_up_button);
-        inputEmail = (EditText) findViewById(R.id.email);
-        inputPassword = (EditText) findViewById(R.id.password);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        btnResetPassword = (Button) findViewById(R.id.btn_reset_password);
+        // Go to main task if user is already logged in
+        if (mAuth.getCurrentUser() != null) {
+            startActivity(new Intent(LogIn.this, PriceChecker.class));
+            finish();
+        }
 
-        btnResetPassword.setOnClickListener(new View.OnClickListener() {
+        // Now set the view
+        setContentView(R.layout.log_in);
+        // Get the corresponding
+        mEmail = findViewById(R.id.email);
+        mPassword = findViewById(R.id.password);
+        mProgressbar = findViewById(R.id.progressBar);
+        mBtnSignup = findViewById(R.id.btn_signup);
+        mBtnLogin = findViewById(R.id.btn_login);
+        mBtnReset = findViewById(R.id.btn_reset_password);
+
+        //Get Firebase auth instance
+        mAuth = FirebaseAuth.getInstance();
+
+        // Initialize the sign up button to go to that activity if clicked
+        mBtnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startNextActivity();
+                startActivity(new Intent(LogIn.this, Signup.class));
             }
         });
 
-        btnSignIn.setOnClickListener(new View.OnClickListener() {
+        // Initialize the reset button to go to that activity if clicked
+        mBtnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                startActivity(new Intent(LogIn.this, ResetPassword.class));
             }
         });
 
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
+        // Implement the login feature
+        mBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                String email = inputEmail.getText().toString().trim();
-                String password = inputPassword.getText().toString().trim();
+                String email = mEmail.getText().toString();
+                final String password = mPassword.getText().toString();
 
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
@@ -134,43 +88,41 @@ public class LogIn extends AppCompatActivity implements LoaderCallbacks<Cursor>,
                     return;
                 }
 
-                if (password.length() < 6) {
-                    Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                mProgressbar.setVisibility(View.VISIBLE);
 
-                progressBar.setVisibility(View.VISIBLE);
-                //create user
-                mAuth.createUserWithEmailAndPassword(email, password)
+                // Authenticate user
+                mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(LogIn.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                Toast.makeText(LogIn.this, "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
-                                progressBar.setVisibility(View.GONE);
                                 // If sign in fails, display a message to the user. If sign in succeeds
                                 // the auth state listener will be notified and logic to handle the
                                 // signed in user can be handled in the listener.
+                                mProgressbar.setVisibility(View.GONE);
                                 if (!task.isSuccessful()) {
-                                    Toast.makeText(LogIn.this, "Authentication failed." + task.getException(),
-                                            Toast.LENGTH_SHORT).show();
+                                    // there was an error
+                                    if (password.length() < 6) {
+                                        mPassword.setError(getString(R.string.minimum_password));
+                                    } else {
+                                        Toast.makeText(LogIn.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
+                                    }
                                 } else {
-                                    startActivity(new Intent(LogIn.this, LogIn.class));
+                                    Intent intent = new Intent(LogIn.this, PriceChecker.class);
+                                    startActivity(intent);
                                     finish();
                                 }
                             }
                         });
-
             }
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        progressBar.setVisibility(View.GONE);
+    private void startNextActivity() {
+        startActivity(new Intent(LogIn.this, PriceChecker.class));
+        finish();
     }
 
-    @Override
+    /*@Override
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
@@ -178,9 +130,7 @@ public class LogIn extends AppCompatActivity implements LoaderCallbacks<Cursor>,
         //updateUI(currentUser);
     }
 
-    private void startNextActivity(){
-        startActivity(new Intent(LogIn.this, PriceChecker.class));
-    }
+
 
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
@@ -212,9 +162,6 @@ public class LogIn extends AppCompatActivity implements LoaderCallbacks<Cursor>,
         return false;
     }
 
-    /**
-     * Callback received when a permissions request has been completed.
-     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -226,11 +173,6 @@ public class LogIn extends AppCompatActivity implements LoaderCallbacks<Cursor>,
     }
 
 
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
     private void attemptLogin() {
         if (mAuthTask != null) {
             return;
@@ -279,18 +221,13 @@ public class LogIn extends AppCompatActivity implements LoaderCallbacks<Cursor>,
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
         return email.contains("@");
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() > 4;
     }
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
@@ -372,11 +309,6 @@ public class LogIn extends AppCompatActivity implements LoaderCallbacks<Cursor>,
 
     }
 
-    /**
-     * Called when pointer capture is enabled or disabled for the current window.
-     *
-     * @param hasCapture True if the window has pointer capture.
-     */
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
@@ -393,10 +325,6 @@ public class LogIn extends AppCompatActivity implements LoaderCallbacks<Cursor>,
         int IS_PRIMARY = 1;
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mEmail;
@@ -409,7 +337,6 @@ public class LogIn extends AppCompatActivity implements LoaderCallbacks<Cursor>,
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
 
             try {
                 // Simulate network access.
@@ -426,7 +353,6 @@ public class LogIn extends AppCompatActivity implements LoaderCallbacks<Cursor>,
                 }
             }
 
-            // TODO: register the new account here.
             return true;
         }
 
@@ -448,6 +374,6 @@ public class LogIn extends AppCompatActivity implements LoaderCallbacks<Cursor>,
             mAuthTask = null;
             showProgress(false);
         }
-    }
+    }*/
 }
 
