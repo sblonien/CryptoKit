@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.NetworkOnMainThreadException;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -31,6 +32,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,11 +43,13 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AssetViewHolder> {
     private static final String TAG = "RVAdapter";
     private Context context;
     private List<CryptoAsset> assets;
+    private SwipeRefreshLayout layout;
     private SparseBooleanArray expandState = new SparseBooleanArray();
 
-    RVAdapter(Context context, List<CryptoAsset> a){
+    RVAdapter(Context context, List<CryptoAsset> a, SwipeRefreshLayout l){
         this.context = context;
         this.assets = a;
+        this.layout = l;
         for (int i = 0; i < assets.size(); i++) {
             expandState.append(i, false);
         }
@@ -65,16 +69,19 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AssetViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final AssetViewHolder holder, final int position) {
-            final CryptoAsset a = assets.get(position);
-
+            final CryptoAsset a = assets.get(holder.getLayoutPosition());
+            int i = position;
+            DecimalFormat dollarFormat = new DecimalFormat("¤###,###,###,##0.00##");
+            DecimalFormat percentFormat = new DecimalFormat("#0.00'%'");
+            DecimalFormat bitcoinFormat = new DecimalFormat("#0.00######");
             holder.assetRank.setText(a.getRank().toString());
             holder.assetName.setText(a.getName());
             holder.assetSymbol.setText(a.getSymbol());
-            holder.assetPriceUSD.setText("$ " + NumberFormat.getInstance().format(a.getPrice_usd() * 100.0 / 100.0));
+            holder.assetPriceUSD.setText(dollarFormat.format(a.getPrice_usd()));
             holder.assetPriceUSD.setTextColor(Color.parseColor(a.getPercent_change_24h() < 0 ? "#cc0000" : "#009933"));
-            holder.assetPercentChange24h.setText(NumberFormat.getInstance().format(Math.round(a.getPercent_change_24h() * 100.0) / 100.0) + "%");
+            holder.assetPercentChange24h.setText(percentFormat.format(a.getPercent_change_24h()));
             holder.assetPercentChange24h.setTextColor(Color.parseColor(a.getPercent_change_24h() < 0 ? "#cc0000" : "#009933"));
-            holder.assetPriceBTC.setText(NumberFormat.getInstance().format(a.getPrice_btc()));
+            holder.assetPriceBTC.setText(bitcoinFormat.format(a.getPrice_btc()));
             holder.assetVolume.setText(NumberFormat.getInstance().format(a.getVolume_usd()));
             holder.assetMarketCap.setText(NumberFormat.getInstance().format(a.getMarket_cap_usd()));
             holder.assetCirculatingVolume.setText(NumberFormat.getInstance().format(a.getAvailable_supply()));
@@ -91,16 +98,16 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AssetViewHolder> {
             holder.expandableLayout.setInterpolator(Utils.createInterpolator(Utils.LINEAR_OUT_SLOW_IN_INTERPOLATOR));
             holder.expandableLayout.setExpanded(false);
             holder.expandableLayout.setBackgroundColor(context.getColor(R.color.backgroundColor));
-            holder.expandableLayout.setExpanded(expandState.get(position));
+            holder.expandableLayout.setExpanded(expandState.get(holder.getLayoutPosition()));
             holder.expandableLayout.setListener(new ExpandableLayoutListenerAdapter() {
                 @Override
                 public void onPreOpen() {
-                    expandState.put(position, true);
+                    expandState.put(holder.getLayoutPosition(), true);
                 }
 
                 @Override
                 public void onPreClose() {
-                    expandState.put(position, false);
+                    expandState.put(holder.getLayoutPosition(), false);
                 }
             });
 

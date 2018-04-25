@@ -45,6 +45,9 @@ dependencies {
     //implementation 'com.google.firebase:firebase-auth:15.0.0'
     // Expandable Layout
     implementation 'com.github.aakira:expandable-layout:1.6.0@aar'
+    // Quit close
+    implementation 'commons-io:commons-io:2.6'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

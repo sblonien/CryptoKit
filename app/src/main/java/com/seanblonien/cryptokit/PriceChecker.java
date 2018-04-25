@@ -31,14 +31,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.apache.commons.io.IOUtils;
 
-public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefreshListener  {
-    private String TAG = PriceChecker.class.getSimpleName();
+public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefreshListener {
     protected GetJSON getjson;
     protected List<CryptoAsset> assets;
-    private RVAdapter rvadapter;
     SwipeRefreshLayout mSwipeRefreshLayout;
     ExpandableLinearLayout expandableLayout;
+    private String TAG = PriceChecker.class.getSimpleName();
+    private RVAdapter rvadapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,46 +64,36 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
         });
 
         fetchData();
-        fetchDescriptions();
 
-        rvadapter = new RVAdapter(this, this.assets);
+        rvadapter = new RVAdapter(this, this.assets, mSwipeRefreshLayout);
         recyclerView.setAdapter(rvadapter);
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 CryptoAsset asset = assets.get(position);
-                Toast.makeText(getApplicationContext(), asset.getName() + " updated!", Toast.LENGTH_SHORT).show();
                 updateData(position);
+                Toast.makeText(getApplicationContext(), asset.getName() + " updated!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onLongClick(View view, int position) {
-
+                CryptoAsset asset = assets.get(position);
+                updateData(position);
+                Toast.makeText(getApplicationContext(), asset.getName() + " refreshed!", Toast.LENGTH_SHORT).show();
             }
         }));
 
     }
 
-    private void fetchDescriptions() {
-        private void doGetDescriptions(){
-            for(int i = 0 ; i < assets.size(); i++){
-                getDescription desc = new getDescription();
-                desc.execute(i);
-            }
-        }
-    }
-
     private void fetchData() {
-        // Signal SwipeRefreshLayout to start the progress indicator
-        mSwipeRefreshLayout.setRefreshing(true);
         getjson = new GetJSON();
-        Toast.makeText(PriceChecker.this,"Fetching data",Toast.LENGTH_LONG).show();
+        Toast.makeText(PriceChecker.this, "Fetching data", Toast.LENGTH_LONG).show();
         getjson.execute();
     }
 
     private void updateData(int position) {
         updateID u = new updateID(position);
-        u.execute();
+
     }
 
     /*
@@ -136,6 +127,8 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
         protected void onPreExecute() {
             super.onPreExecute();
             assets.clear();
+            // Signal SwipeRefreshLayout to start the progress indicator
+            mSwipeRefreshLayout.setRefreshing(true);
         }
 
         @Override
@@ -148,11 +141,11 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
                 dataText = datareader.lines().collect(Collectors.joining("\n"));
                 Gson datagson = new GsonBuilder().create();
                 assets.addAll(Arrays.asList(datagson.fromJson(dataText, CryptoAsset[].class)));
-                for(CryptoAsset c : assets){
-                    c.setImage("https://chasing-coins.com/api/v1/std/logo/"+c.getSymbol());
+                for (CryptoAsset c : assets) {
+                    c.setImage("https://chasing-coins.com/api/v1/std/logo/" + c.getSymbol());
                 }
                 Log.i(TAG, assets.toString());
-            } catch (IOException | NetworkOnMainThreadException  e) {
+            } catch (IOException | NetworkOnMainThreadException e) {
                 e.printStackTrace();
             }
 
@@ -162,7 +155,7 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
         @Override
         protected void onPostExecute(Void result) {
             rvadapter.notifyDataSetChanged();
-            if(mSwipeRefreshLayout.isRefreshing()) {
+            if (mSwipeRefreshLayout.isRefreshing()) {
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         }
@@ -172,8 +165,95 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
     private class updateID extends AsyncTask<Void, Void, Void> {
         Integer index;
 
-        updateID(Integer i){
+        updateID(Integer i) {
             this.index = i;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mSwipeRefreshLayout.setRefreshing(true);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            String dataText, descripText;
+            URL dataURL, descripURL;
+            URLConnection dataConnection = null, descripConnection = null;
+            BufferedReader dataReader = null, descripReader = null;
+            try {
+                dataURL = new URL("https://api.coinmarketcap.com/v1/ticker/" + assets.get(index).getId());
+                dataConnection = dataURL.openConnection();
+                dataReader = new BufferedReader(new InputStreamReader(dataConnection.getInputStream(), StandardCharsets.UTF_8));
+                dataText = dataReader.lines().collect(Collectors.joining("\n"));
+                Gson dataGson = new GsonBuilder().create();
+                List<CryptoAsset> c;
+                c = Arrays.asList(dataGson.fromJson(dataText, CryptoAsset[].class));
+                CryptoAsset b = c.get(0);
+                assets.get(index)
+                        .setPrice_usd(b.getPrice_usd())
+                        .setPrice_btc(b.getPrice_btc())
+                        .setPercent_change_1h(b.getPercent_change_1h())
+                        .setPercent_change_24h(b.getPercent_change_24h())
+                        .setVolume_usd(b.getVolume_usd())
+                        .setLast_updated(b.getLast_updated());
+                // Log.i(TAG, assets.get(index).toString());
+
+
+
+
+                descripURL = new URL("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles="+myAsset.getName());
+                descripConnection = descripURL.openConnection();
+                descripReader = new BufferedReader(new InputStreamReader(descripConnection.getInputStream(), StandardCharsets.UTF_8));
+                descripText = descripReader.lines().collect(Collectors.joining("\n"));
+                //Log.i(TAG, "TEXT: " + descripText);
+                Gson descripGson = new GsonBuilder().create();
+                JsonObject obj = descripGson.fromJson(descripText, JsonObject.class);
+                String key = obj.getAsJsonObject("query").getAsJsonObject("pages").keySet().toString().replace("[", "").replace("]","");
+                JsonElement jsonElement = obj.getAsJsonObject("query")
+                        .getAsJsonObject("pages")
+                        .getAsJsonObject(key)
+                        .get("extract");
+                if(jsonElement == null || key.compareTo("-1") == 0){
+                    //Log.i(TAG, "No Descript Found!");
+                    assets.get(index).setDescription("No description found!");
+                } else {
+                    String myString = jsonElement.getAsString();
+                    if(myString.contains(".")){
+                        assets.get(index).setDescription(jsonElement.getAsString());
+                    }
+                }
+            } catch (IOException | NetworkOnMainThreadException e) {
+                e.printStackTrace();
+            } finally {
+                if(dataReader != null){
+                    dataReader.close();
+                }
+                if(descripReader != null){
+                    descripReader.close();
+                }
+            }
+
+
+
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            rvadapter.notifyDataSetChanged();
+            if (mSwipeRefreshLayout.isRefreshing()) {
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        }
+    }
+
+    private class getDescription extends AsyncTask<Void, Void, Void> {
+        RVAdapter.AssetViewHolder holder;
+
+        public getDescription(RVAdapter.AssetViewHolder holder) {
+            this.holder = holder;
         }
 
         @Override
@@ -183,50 +263,7 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
 
         @Override
         protected Void doInBackground(Void... voids) {
-            String pageText;
-            try {
-                URL url = new URL("https://api.coinmarketcap.com/v1/ticker/"+assets.get(index).getId());
-                URLConnection conn = url.openConnection();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
-                pageText = reader.lines().collect(Collectors.joining("\n"));
-                Gson gson = new GsonBuilder().create();
-                List<CryptoAsset> c;
-                c = Arrays.asList(gson.fromJson(pageText, CryptoAsset[].class));
-                CryptoAsset b = c.get(0);
-                assets.get(index)
-                        .setPrice_usd(b.getPrice_usd())
-                        .setPrice_btc(b.getPrice_btc())
-                        .setPercent_change_1h(b.getPercent_change_1h())
-                        .setPercent_change_24h(b.getPercent_change_24h())
-                        .setVolume_usd(b.getVolume_usd())
-                        .setLast_updated(b.getLast_updated());
-                Log.i(TAG, assets.get(index).toString());
-            } catch (IOException | NetworkOnMainThreadException  e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            rvadapter.notifyDataSetChanged();
-            if(mSwipeRefreshLayout.isRefreshing()) {
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-        }
-    }
-
-    private class getDescription extends AsyncTask<Integer, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Integer... position) {
-            CryptoAsset myAsset = assets.get(position[0]);
+            CryptoAsset myAsset = assets.get(holder.getLayoutPosition());
             String descripText;
             try {
                 URL url = new URL("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles="+myAsset.getName());
@@ -245,7 +282,10 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
                     //Log.i(TAG, "No Descript Found!");
                     myAsset.setDescription("No description found!");
                 } else {
-                    myAsset.setDescription(jsonElement.getAsString());
+                    String myString = jsonElement.getAsString();
+                    if(myString.contains(".")){
+                        myAsset.setDescription(jsonElement.getAsString());
+                    }
                 }
                 //Log.i(TAG, myAsset.toString());
             } catch (IOException | NetworkOnMainThreadException e) {
@@ -257,7 +297,7 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
 
         @Override
         protected void onPostExecute(Void result) {
-            rvadapter.notifyDataSetChanged();
+            rvadapter.notifyItemChanged(holder.getLayoutPosition());
         }
     }
 }
