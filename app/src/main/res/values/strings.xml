@@ -11,9 +11,9 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
     <string name="price_checker">Price Checker</string>
     <string name="crypto_asset_icon">Crypto Asset Icon</string>
-    <string name="placeholder_name">\u0009\u0009\u0009\u0009\u0009 Name</string>
+    <string name="placeholder_name">Name</string>
     <string name="placeholder_price">Price USD</string>
-    <string name="placeholder_percent_change">24h % Δ</string>
+    <string name="placeholder_percent_change">24h % Δ</string> <!--24h % Δ-->
     <string name="action_sign_in_short">Register</string>
     <string name="email">Email</string>
     <string name="minimum_password">Password too short, enter minimum 6 characters!</string>
@@ -45,16 +45,6 @@
     <string name="log_in">Log In</string>
     <string name="sign_up">Sign Up</string>
     <string name="reset_password">Reset Password</string>
-    <string name="cryptokit_logo">CryptoKit Logo</string>
-    <string name="dummy_rank">1</string>
-    <string name="dummy_asset_name">Ethereum</string>
-    <string name="dummy_asset_symbol">ETH</string>
-    <string name="dummy_asset_price_usd">$500</string>
-    <string name="dummy_asset_price_btc">0.07</string>
-    <string name="dummy_asset_volume">$1,500,00,00</string>
-    <string name="dummy_asset_market_cap">$140,000,000</string>
-    <string name="dummy_asset">19,000,000</string>
-    <string name="dummy_asset_max_supply">24,000,000</string>
-    <string name="dummy_asset_description">No description.</string>
     <string name="logout">Logout</string>
+    <string name="cryptokit_logo">CryptoKit Logo</string>
 </resources>

@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.aakira.expandablelayout.ExpandableLinearLayout;
-import com.google.android.gms.signin.SignIn;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -57,6 +56,7 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
             @Override
             public void onClick(View v) {
                 FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                LogIn.signOut = true;
                 mAuth.signOut();
                 LogIn.signOut = true;
                 startActivity(new Intent(PriceChecker.this, LogIn.class));

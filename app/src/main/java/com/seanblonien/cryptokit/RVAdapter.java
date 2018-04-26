@@ -2,12 +2,9 @@ package com.seanblonien.cryptokit;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.AsyncTask;
-import android.os.NetworkOnMainThreadException;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,23 +18,9 @@ import com.bumptech.glide.request.RequestOptions;
 import com.github.aakira.expandablelayout.ExpandableLayoutListenerAdapter;
 import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 import com.github.aakira.expandablelayout.Utils;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AssetViewHolder> {
     private static final String TAG = "RVAdapter";
@@ -45,6 +28,11 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AssetViewHolder> {
     private List<CryptoAsset> assets;
     private SwipeRefreshLayout layout;
     private SparseBooleanArray expandState = new SparseBooleanArray();
+    private static DecimalFormat dollarFormat = new DecimalFormat("¤###,###,###,##0.00##");
+    private static DecimalFormat smallDollarFormat = new DecimalFormat("¤0.0000");
+    private static DecimalFormat percentFormat = new DecimalFormat("#0.00'%'");
+    private static DecimalFormat bitcoinFormat = new DecimalFormat("#0.00######");
+    private static DecimalFormat tokenFormat = new DecimalFormat("###,###,###,##0");
 
     RVAdapter(Context context, List<CryptoAsset> a, SwipeRefreshLayout l){
         this.context = context;
@@ -69,12 +57,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AssetViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final AssetViewHolder holder, final int position) {
+            // Get a reference to this asset the holder will hold
             final CryptoAsset a = assets.get(holder.getLayoutPosition());
-            DecimalFormat dollarFormat = new DecimalFormat("¤###,###,###,##0.00##");
-            DecimalFormat smallDollarFormat = new DecimalFormat("¤0.0000");
-            DecimalFormat percentFormat = new DecimalFormat("#0.00'%'");
-            DecimalFormat bitcoinFormat = new DecimalFormat("#0.00######");
-            DecimalFormat tokenFormat = new DecimalFormat("###,###,###,##0");
+            // Set appropriate attributes
             holder.assetRank.setText(String.valueOf(a.getRank()));
             holder.assetName.setText(a.getName());
             holder.assetSymbol.setText(a.getSymbol());
@@ -134,7 +119,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AssetViewHolder> {
         return assets.size();
     }
 
-    public static class AssetViewHolder extends RecyclerView.ViewHolder {
+    static class AssetViewHolder extends RecyclerView.ViewHolder {
         ImageView assetImage;
         TextView assetSymbol;
         TextView assetRank;
