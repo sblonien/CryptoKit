@@ -40,7 +40,7 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
 
     private List<CryptoAsset> myAssets;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    ExpandableLinearLayout expandableLayout;
+    public ExpandableLinearLayout expandableLayout;
     private RVAdapter mRVAdapter;
     private TextView mBtnLogout;
 
@@ -58,6 +58,7 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
             public void onClick(View v) {
                 FirebaseAuth mAuth = FirebaseAuth.getInstance();
                 mAuth.signOut();
+                LogIn.signOut = true;
                 startActivity(new Intent(PriceChecker.this, LogIn.class));
                 finish();
             }
@@ -194,15 +195,19 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
             } catch (IOException | NetworkOnMainThreadException e) {
                 e.printStackTrace();
             } finally {
-                try {
-                    dataReader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if(dataReader != null){
+                    try {
+                        dataReader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-                try {
-                    descripReader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if(descripReader != null){
+                    try {
+                        dataReader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -257,10 +262,12 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
             } catch (IOException | NetworkOnMainThreadException e) {
                 e.printStackTrace();
             } finally {
-                try {
-                    dataReader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if(dataReader != null){
+                    try {
+                        dataReader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 

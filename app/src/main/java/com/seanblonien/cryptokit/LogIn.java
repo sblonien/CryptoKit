@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
  * A login screen that offers login via email/password.
  */
 public class LogIn extends AppCompatActivity {
+    public static boolean signOut = false;
     // UI references.
     private EditText mEmail, mPassword;
     private Button mBtnSignup, mBtnLogin, mBtnReset, mSignout;
@@ -35,7 +36,8 @@ public class LogIn extends AppCompatActivity {
 
         //Get Firebase auth instance
         mAuth = FirebaseAuth.getInstance();
-        //mAuth.signOut();
+        // Sign out if the user clicked the sign out button
+        if(signOut == true) mAuth.signOut();
 
         // Go to main task if user is already logged in
         if (mAuth.getCurrentUser() != null) {
@@ -110,9 +112,7 @@ public class LogIn extends AppCompatActivity {
                                         Toast.makeText(LogIn.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
                                     }
                                 } else {
-                                    Intent intent = new Intent(LogIn.this, PriceChecker.class);
-                                    startActivity(intent);
-                                    finish();
+                                    startNextActivity();
                                 }
                             }
                         });
@@ -121,11 +121,13 @@ public class LogIn extends AppCompatActivity {
     }
 
     private void startNextActivity() {
-        startActivity(new Intent(LogIn.this, PriceChecker.class));
+        Intent intent = new Intent(LogIn.this, PriceChecker.class);
+        startActivity(intent);
         finish();
     }
 
     public void signOut() {
+        signOut = false;
         mAuth.signOut();
     }
 

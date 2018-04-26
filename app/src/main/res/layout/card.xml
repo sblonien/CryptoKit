@@ -16,9 +16,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:gravity="center"
-        android:text="1"
         android:textAlignment="center"
-        android:textSize="@dimen/card_font_size" />
+        android:textSize="@dimen/card_font_size"
+        android:text="@string/dummy_asset_name"/>
 
     <ImageView
         android:id="@+id/asset_image"
@@ -38,7 +38,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="125dp"
         android:layout_marginTop="13dp"
-        android:text="Ethereum"
+        android:text="@string/dummy_asset_name"
         android:textSize="@dimen/card_font_size" />
 
     <TextView
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/asset_name"
         android:layout_marginTop="46dp"
-        android:text="ETH"
+        android:text="@string/dummy_asset_symbol"
         android:textSize="@dimen/card_font_size" />
 
     <TextView
@@ -58,7 +58,7 @@
         android:layout_marginEnd="70dp"
         android:layout_marginTop="46dp"
         android:gravity="center"
-        android:text="$100"
+        android:text="@string/dummy_asset_price_usd"
         android:textSize="@dimen/card_font_size" />
 
     <TextView
@@ -97,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:gravity="left"
-                android:text="btc 0.05"
+                android:text="@string/dummy_asset_price_btc"
                 android:textSize="@dimen/card_font_size" />
 
             <TextView
@@ -107,7 +107,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_below="@id/asset_price_btc"
                 android:gravity="left"
-                android:text="vol $10,000,000"
+                android:text="@string/dummy_asset_volume"
                 android:textSize="@dimen/card_font_size" />
 
             <TextView
@@ -117,7 +117,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_below="@id/asset_volume"
                 android:gravity="left"
-                android:text="cap $100,000,000"
+                android:text="@string/dummy_asset_market_cap"
                 android:textSize="@dimen/card_font_size" />
 
             <TextView
@@ -127,7 +127,7 @@
                 android:layout_below="@id/asset_market_cap"
                 android:layout_alignParentEnd="true"
                 android:gravity="left"
-                android:text="supply 8,000,000"
+                android:text="@string/dummy_asset"
                 android:textSize="@dimen/card_font_size" />
 
 
@@ -138,7 +138,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/asset_supply"
                 android:gravity="left"
-                android:text="max supply 8,000,000"
+                android:text="@string/dummy_asset_max_supply"
                 android:textSize="@dimen/card_font_size" />
 
             <TextView
@@ -149,12 +149,10 @@
                 android:layout_below="@+id/asset_max_supply"
                 android:gravity="left"
                 android:paddingTop="20dp"
-                android:text="No description"
+                android:text="@string/dummy_asset_description"
                 android:textSize="@dimen/card_font_size" />
-
 
         </RelativeLayout>
     </com.github.aakira.expandablelayout.ExpandableLinearLayout>
-
 
 </RelativeLayout>

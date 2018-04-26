@@ -75,11 +75,14 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AssetViewHolder> {
             DecimalFormat percentFormat = new DecimalFormat("#0.00'%'");
             DecimalFormat bitcoinFormat = new DecimalFormat("#0.00######");
             DecimalFormat tokenFormat = new DecimalFormat("###,###,###,##0");
-            holder.assetRank.setText(a.getRank().toString());
+            holder.assetRank.setText(String.valueOf(a.getRank()));
             holder.assetName.setText(a.getName());
             holder.assetSymbol.setText(a.getSymbol());
-            if(a.getPrice_usd() < 0.1) holder.assetPriceUSD.setText(smallDollarFormat.format(a.getPrice_usd()));
-            else holder.assetPriceUSD.setText(dollarFormat.format(a.getPrice_usd()));
+            if(a.getPrice_usd() < 0.1) {
+                holder.assetPriceUSD.setText(smallDollarFormat.format(a.getPrice_usd()));
+            } else {
+                holder.assetPriceUSD.setText(dollarFormat.format(a.getPrice_usd()));
+            }
             holder.assetPriceUSD.setTextColor(Color.parseColor(a.getPercent_change_24h() < 0 ? "#cc0000" : "#009933"));
             holder.assetPercentChange24h.setText(percentFormat.format(a.getPercent_change_24h()));
             holder.assetPercentChange24h.setTextColor(Color.parseColor(a.getPercent_change_24h() < 0 ? "#cc0000" : "#009933"));
@@ -87,8 +90,11 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AssetViewHolder> {
             holder.assetVolume.setText("24/hr volume: "+dollarFormat.format(a.getVolume_usd()));
             holder.assetMarketCap.setText("Market cap: "+dollarFormat.format(a.getMarket_cap_usd()));
             holder.assetCirculatingVolume.setText("Available token supply: "+tokenFormat.format(a.getAvailable_supply().longValue()));
-            if(a.getMax_supply() != null) holder.assetMaxSupply.setText("Maximum token supply: "+tokenFormat.format(a.getMax_supply()));
-            else holder.assetMaxSupply.setText("Maximum token supply: N/A");
+            if(a.getMax_supply() != null) {
+                holder.assetMaxSupply.setText("Maximum token supply: "+tokenFormat.format(a.getMax_supply()));
+            } else {
+                holder.assetMaxSupply.setText("Maximum token supply: N/A");
+            }
             holder.assetDescription.setText(a.getDescription());
             RequestOptions myOptions = new RequestOptions()
                     .fitCenter()
@@ -124,9 +130,11 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AssetViewHolder> {
     }
 
     @Override
-    public int getItemCount() { return assets.size(); }
+    public int getItemCount() {
+        return assets.size();
+    }
 
-    static class AssetViewHolder extends RecyclerView.ViewHolder {
+    public static class AssetViewHolder extends RecyclerView.ViewHolder {
         ImageView assetImage;
         TextView assetSymbol;
         TextView assetRank;
