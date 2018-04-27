@@ -18,7 +18,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 /**
- * A login screen that offers login via email/password.
+ * The type Log in.
  */
 public class LogIn extends AppCompatActivity {
     // UI references.
@@ -26,6 +26,9 @@ public class LogIn extends AppCompatActivity {
     private Button mBtnSignup, mBtnLogin, mBtnReset;
     private ProgressBar mProgressbar;
     private FirebaseAuth mAuth;
+    /**
+     * The constant signOut.
+     */
     public static boolean signOut = false;
 
     @Override
@@ -126,6 +129,9 @@ public class LogIn extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Sign out.
+     */
     public void signOut() {
         signOut = false;
         mAuth.signOut();

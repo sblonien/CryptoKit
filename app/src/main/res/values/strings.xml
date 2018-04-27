@@ -29,7 +29,7 @@
     <string name="hint_password">Password</string>
     <string name="hint_name">Fullname</string>
     <string name="btn_login">Log in</string>
-    <string name="btn_link_to_register">Not a member? Register here.</string>
+    <string name="btn_link_to_register">Not a registered? Register here.</string>
     <string name="btn_link_to_login">Already registered? Log in here.</string>
     <string name="title_activity_reset_password">ResetPasswordActivity</string>
     <string name="btn_forgot_password">Forgot your password?</string>
@@ -47,4 +47,14 @@
     <string name="reset_password">Reset Password</string>
     <string name="logout">Logout</string>
     <string name="cryptokit_logo">CryptoKit Logo</string>
+    <string name="dummy_asset_name">Ethereum</string>
+    <string name="dummy_asset_rank">2</string>
+    <string name="dummy_asset_symbol">ETH</string>
+    <string name="dummy_asset_price_usd">$500</string>
+    <string name="dummy_asset_price_btc">0.05</string>
+    <string name="dummy_asset_volume">$1,500,000,000</string>
+    <string name="dummy_asset_market_cap">$140,000,000,000</string>
+    <string name="dummy_asset_supply">17,000,000</string>
+    <string name="dummy_asset_max_supply">24,000,000</string>
+    <string name="dummy_asset_description">This is a description of Ethereum</string>
 </resources>

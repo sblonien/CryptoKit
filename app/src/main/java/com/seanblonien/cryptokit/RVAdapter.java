@@ -119,6 +119,46 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AssetViewHolder> {
         return assets.size();
     }
 
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public List<CryptoAsset> getAssets() {
+        return assets;
+    }
+
+    public void setAssets(List<CryptoAsset> assets) {
+        this.assets = assets;
+    }
+
+    public SwipeRefreshLayout getLayout() {
+        return layout;
+    }
+
+    public void setLayout(SwipeRefreshLayout layout) {
+        this.layout = layout;
+    }
+
+    public SparseBooleanArray getExpandState() {
+        return expandState;
+    }
+
+    public void setExpandState(SparseBooleanArray expandState) {
+        this.expandState = expandState;
+    }
+
+    public static DecimalFormat getDollarFormat() {
+        return dollarFormat;
+    }
+
+    public static void setDollarFormat(DecimalFormat dollarFormat) {
+        RVAdapter.dollarFormat = dollarFormat;
+    }
+
     static class AssetViewHolder extends RecyclerView.ViewHolder {
         ImageView assetImage;
         TextView assetSymbol;

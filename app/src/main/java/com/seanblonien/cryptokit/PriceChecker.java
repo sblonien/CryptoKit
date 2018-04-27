@@ -34,9 +34,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The type Price checker.
+ */
 public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefreshListener {
-    private String TAG = PriceChecker.class.getSimpleName();
 
+
+    private PriceChecker(){}
+
+    private String TAG = PriceChecker.class.getSimpleName();
     private List<CryptoAsset> myAssets;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     public ExpandableLinearLayout expandableLayout;
@@ -155,7 +161,9 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
                 URLConnection dataConnection = dataURL.openConnection();
                 dataReader = new BufferedReader(new InputStreamReader(dataConnection.getInputStream(), StandardCharsets.UTF_8));
                 // Extract the reader to a string
-                dataText = dataReader.lines().collect(Collectors.joining("\n"));
+                dataText = dataReader
+                        .lines()
+                        .collect(Collectors.joining("\n"));
                 Gson dataGson = new GsonBuilder().create();
                 // Parse the JSON file into a CryptoAssset
                 List<CryptoAsset> c = Arrays.asList(dataGson.fromJson(dataText, CryptoAsset[].class));
@@ -177,7 +185,12 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
                 Gson descripGson = new GsonBuilder().create();
                 JsonObject obj = descripGson.fromJson(descripText, JsonObject.class);
                 // Get the key withn the JSON response because the key varies by query and asset
-                String key = obj.getAsJsonObject("query").getAsJsonObject("pages").keySet().toString().replace("[", "").replace("]", "");
+                String key = obj.getAsJsonObject("query")
+                        .getAsJsonObject("pages")
+                        .keySet()
+                        .toString()
+                        .replace("[", "")
+                        .replace("]", "");
                 JsonElement jsonElement = obj.getAsJsonObject("query")
                         .getAsJsonObject("pages")
                         .getAsJsonObject(key)
@@ -222,10 +235,26 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
     }
 
     private static class GetJSON extends AsyncTask<Void, Void, Void> {
+        /**
+         * The My assets.
+         */
         List<CryptoAsset> myAssets;
+        /**
+         * The M adapter.
+         */
         RVAdapter mAdapter;
+        /**
+         * The M swipe refresh layout.
+         */
         SwipeRefreshLayout mSwipeRefreshLayout;
 
+        /**
+         * Instantiates a new Get json.
+         *
+         * @param mAssets             the m assets
+         * @param mAdapter            the m adapter
+         * @param mSwipeRefreshLayout the m swipe refresh layout
+         */
         GetJSON(List<CryptoAsset> mAssets, RVAdapter mAdapter, SwipeRefreshLayout mSwipeRefreshLayout) {
             this.myAssets = mAssets;
             this.mAdapter = mAdapter;
@@ -249,10 +278,13 @@ public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefre
                 URLConnection dataConnection = dataURL.openConnection();
                 dataReader = new BufferedReader(new InputStreamReader(dataConnection.getInputStream(), StandardCharsets.UTF_8));
                 // Parse the JSON
-                dataText = dataReader.lines().collect(Collectors.joining("\n"));
+                dataText = dataReader
+                        .lines()
+                        .collect(Collectors.joining("\n"));
                 Gson datagson = new GsonBuilder().create();
                 // Add the parsed objects to the list
-                myAssets.addAll(Arrays.asList(datagson.fromJson(dataText, CryptoAsset[].class)));
+                myAssets.addAll(Arrays
+                        .asList(datagson.fromJson(dataText, CryptoAsset[].class)));
 
                 // Add the image URL for all the assets
                 for (CryptoAsset c : myAssets) {

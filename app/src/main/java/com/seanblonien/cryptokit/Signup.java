@@ -17,6 +17,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * The type Signup.
+ */
 public class Signup extends AppCompatActivity {
 
     private EditText inputEmail, inputPassword;

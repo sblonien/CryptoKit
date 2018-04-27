@@ -18,7 +18,7 @@
         android:gravity="center"
         android:textAlignment="center"
         android:textSize="@dimen/card_font_size"
-        android:text="@string/dummy_asset_name"/>
+        android:text="@string/dummy_asset_rank"/>
 
     <ImageView
         android:id="@+id/asset_image"
@@ -127,7 +127,7 @@
                 android:layout_below="@id/asset_market_cap"
                 android:layout_alignParentEnd="true"
                 android:gravity="left"
-                android:text="@string/dummy_asset"
+                android:text="@string/dummy_asset_supply"
                 android:textSize="@dimen/card_font_size" />
 
 
