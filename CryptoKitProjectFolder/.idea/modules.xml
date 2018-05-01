@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/CryptoKit Project Folder.iml" filepath="$PROJECT_DIR$/CryptoKit Project Folder.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CryptoKitProjectFolder.iml" filepath="$PROJECT_DIR$/CryptoKitProjectFolder.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
