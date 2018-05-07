@@ -9,7 +9,7 @@ import android.view.View;
 /**
  * The type Recycler touch listener.
  */
-public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
+class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
     private GestureDetector gestureDetector;
     private ClickListener clickListener;

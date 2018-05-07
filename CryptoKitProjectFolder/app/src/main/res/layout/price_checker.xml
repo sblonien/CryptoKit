@@ -44,7 +44,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="123dp"
             android:fontFamily="sans-serif"
-            android:gravity="right"
+            android:gravity="end"
             android:text="@string/placeholder_name"
             android:textSize="14sp" />
 
@@ -56,7 +56,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginEnd="103dp"
             android:fontFamily="sans-serif"
-            android:gravity="right"
+            android:gravity="end"
             android:text="@string/placeholder_price"
             android:textSize="14sp" />
 
@@ -68,7 +68,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginEnd="10dp"
             android:fontFamily="sans-serif"
-            android:gravity="right"
+            android:gravity="end"
             android:text="@string/placeholder_percent_change"
             android:textSize="14sp" />
 

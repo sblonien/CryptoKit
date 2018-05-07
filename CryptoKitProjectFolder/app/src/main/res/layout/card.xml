@@ -96,7 +96,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:gravity="left"
+                android:gravity="start"
                 android:text="@string/dummy_asset_price_btc"
                 android:textSize="@dimen/card_font_size" />
 
@@ -106,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_below="@id/asset_price_btc"
-                android:gravity="left"
+                android:gravity="start"
                 android:text="@string/dummy_asset_volume"
                 android:textSize="@dimen/card_font_size" />
 
@@ -116,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_below="@id/asset_volume"
-                android:gravity="left"
+                android:gravity="start"
                 android:text="@string/dummy_asset_market_cap"
                 android:textSize="@dimen/card_font_size" />
 
@@ -126,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/asset_market_cap"
                 android:layout_alignParentEnd="true"
-                android:gravity="left"
+                android:gravity="start"
                 android:text="@string/dummy_asset_supply"
                 android:textSize="@dimen/card_font_size" />
 
@@ -137,7 +137,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/asset_supply"
-                android:gravity="left"
+                android:gravity="start"
                 android:text="@string/dummy_asset_max_supply"
                 android:textSize="@dimen/card_font_size" />
 
@@ -147,7 +147,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/asset_max_supply"
-                android:gravity="left"
+                android:gravity="start"
                 android:paddingTop="20dp"
                 android:text="@string/dummy_asset_description"
                 android:textSize="@dimen/card_font_size" />

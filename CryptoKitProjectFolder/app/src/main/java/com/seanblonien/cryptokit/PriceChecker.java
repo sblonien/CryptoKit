@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
  * The type Price checker.
  */
 public class PriceChecker extends Activity implements SwipeRefreshLayout.OnRefreshListener {
-    private String TAG = PriceChecker.class.getSimpleName();
+    private final String TAG = PriceChecker.class.getSimpleName();
     private List<CryptoAsset> myAssets;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     public ExpandableLinearLayout expandableLayout;

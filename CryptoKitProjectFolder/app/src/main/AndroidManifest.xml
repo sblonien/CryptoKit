@@ -16,7 +16,7 @@
         android:fullBackupContent="@xml/backup_descriptor">
         <activity
             android:name=".LogIn"
-            android:label="@string/log_in"
+            android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.CryptoKit">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

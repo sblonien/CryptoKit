@@ -132,7 +132,7 @@ public class LogIn extends AppCompatActivity {
     /**
      * Sign out.
      */
-    public void signOut() {
+    private void signOut() {
         signOut = false;
         mAuth.signOut();
     }

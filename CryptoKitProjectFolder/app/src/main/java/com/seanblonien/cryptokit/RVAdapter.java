@@ -29,10 +29,10 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AssetViewHolder> {
     private SwipeRefreshLayout layout;
     private SparseBooleanArray expandState = new SparseBooleanArray();
     private static DecimalFormat dollarFormat = new DecimalFormat("¤###,###,###,##0.00##");
-    private static DecimalFormat smallDollarFormat = new DecimalFormat("¤0.0000");
-    private static DecimalFormat percentFormat = new DecimalFormat("#0.00'%'");
-    private static DecimalFormat bitcoinFormat = new DecimalFormat("#0.00######");
-    private static DecimalFormat tokenFormat = new DecimalFormat("###,###,###,##0");
+    private static final DecimalFormat smallDollarFormat = new DecimalFormat("¤0.0000");
+    private static final DecimalFormat percentFormat = new DecimalFormat("#0.00'%'");
+    private static final DecimalFormat bitcoinFormat = new DecimalFormat("#0.00######");
+    private static final DecimalFormat tokenFormat = new DecimalFormat("###,###,###,##0");
 
     RVAdapter(Context context, List<CryptoAsset> a, SwipeRefreshLayout l){
         this.context = context;
@@ -41,11 +41,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.AssetViewHolder> {
         for (int i = 0; i < assets.size(); i++) {
             expandState.append(i, false);
         }
-    }
-
-    @Override
-    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
     }
 
     @NonNull
