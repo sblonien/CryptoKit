@@ -9,32 +9,43 @@
 
     <style name="Theme.AppCompat.Light.NoActionBar.CryptoKit" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
+
         <item name="android:colorPrimary">@color/m_red</item>
-        <item name="android:colorPrimaryDark">@color/m_blue</item>
-        <item name="android:navigationBarColor">@color/m_blue</item>
-        <item name="android:colorForeground">@color/m_white</item>
-        <item name="android:colorAccent">@color/m_red</item>
-        <item name="android:textColorPrimary">@color/m_gray</item>
-        <item name="android:textColorPrimaryInverse">@color/m_hot_pink</item>
+        <item name="android:colorPrimaryDark">@color/m_light_blue</item>
+        <item name="android:colorAccent">@color/m_blue</item>
         <item name="android:background">@color/m_white</item>
         <item name="android:colorBackground">@color/m_white</item>
+        <item name="android:colorForeground">@color/m_white</item>
         <item name="android:windowBackground">@color/m_white</item>
+        <item name="android:navigationBarColor">@color/m_red</item>
+        <item name="android:statusBarColor">@color/m_red</item>
+        <item name="android:textColorPrimary">@color/m_gray</item>
+        <item name="android:textColorPrimaryInverse">@color/m_white</item>
         <item name="android:textColor">@color/m_gray</item>
-        <item name="android:textColorSecondary">@color/m_gray</item>
-        <item name="android:textColorTertiary">@color/m_gray</item>
+        <item name="android:textColorSecondary">@color/m_white</item>
+        <item name="android:textColorSecondaryInverse">@color/m_white</item>
+        <item name="android:textColorTertiary">@color/m_white</item>
+        <item name="android:textColorTertiaryInverse">@color/white</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="color">@color/m_gray</item>
-        <item name="android:textColorHighlight">@color/m_light_pink</item>
-        <item name="android:state_focused">@color/m_light_pink</item>
-        <item name="android:state_active">@color/m_light_pink</item>
-        <item name="android:state_window_focused">@color/m_light_pink</item>
-        <item name="android:state_empty">@color/m_gray</item>
+        <item name="android:colorBackgroundCacheHint">@color/m_white</item>
+        <item name="android:colorBackgroundFloating">@color/m_white</item>
+
         <item name="windowActionBar">@color/m_gray</item>
+        <item name="android:state_focused">@color/m_gray</item>
+        <item name="android:state_active">@color/m_gray</item>
+        <item name="android:state_window_focused">@color/m_gray</item>
+        <item name="android:state_empty">@color/m_gray</item>
 
         <item name="android:windowActivityTransitions">true</item>
         <item name="android:windowEnterTransition">@android:transition/slide_right</item>
         <item name="android:windowExitTransition">@android:transition/slide_left</item>
+
+        <item name="colorAccent">@color/m_blue</item>
+        <item name="colorPrimary">@color/m_light_blue</item>
+        <item name="colorPrimaryDark">@color/m_white</item>
     </style>
+
+    <style name="Theme.AppCompat.NoActionBar.CryptoKit" parent="Theme.AppCompat.NoActionBar" />
 
 </resources>

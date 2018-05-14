@@ -1,6 +1,7 @@
 package com.seanblonien.cryptokit;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -87,7 +89,16 @@ public class LogIn extends AppCompatActivity {
                 final String password = mPassword.getText().toString();
 
                 if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
+                    Toast toast = Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT);
+                    View view = toast.getView();
+
+                    //To change the Background of Toast
+                    view.setBackgroundColor(Color.TRANSPARENT);
+                    TextView text = (TextView) view.findViewById(android.R.id.message);
+                    //Shadow of the Of the Text Color
+                    text.setShadowLayer(0, 0, 0, Color.TRANSPARENT);
+                    text.setTextColor(Color.BLACK);
+                    toast.show();
                     return;
                 }
 

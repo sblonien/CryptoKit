@@ -23,7 +23,13 @@
     <color name="m_blue">#44459C</color>
     <color name="m_white">#FAFAFA</color>
     <color name="m_light_pink">#FF55D4</color>
+    <color name="m_light_pink_bg">#F2D3DC</color>
     <color name="m_gray">#222222</color>
+    <color name="m_light_gray">#4A4A4A</color>
     <color name="m_hot_pink">#CA0C87</color>
+    <color name="m_light_blue">#5490CC</color>
+    <color name="m_red_button">#ED174B</color>
+    <color name="secondary_text_material_dark">#ffffff</color>
+    <color name="m_secondary_text_material_dark">#00ffffff</color>
 
 </resources>
